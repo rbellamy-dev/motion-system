@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+/*
+ * `full-motion:` applies only when reduced motion is off. MotionConfigProvider sets
+ * [data-reduced-motion] on <html> from the OS setting or the playground toggle, so CSS
+ * transitions follow the same switch as JS animations. Colour and opacity changes can stay
+ * unconditional; anything that moves or scales goes behind this variant.
+ */
+@custom-variant full-motion (:root:not([data-reduced-motion]) &);
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --color-paper: #f6f4ef;
+  --color-surface: #ffffff;
+  --color-ink: #1d1c1a;
+  --color-muted: #6b675f;
+  --color-line: #e4e0d8;
+  --color-accent: #5b5bd6;
+  --color-accent-soft: #ecebfb;
+
+  /*
+   * Motion bridge. Defaults mirror src/tokens/motion.ts so the page is correct before JS runs;
+   * MotionConfigProvider overwrites these on :root whenever the playground changes a token.
+   * --ease-* registers Tailwind utilities like `ease-enter`.
+   */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-enter: cubic-bezier(0, 0, 0.2, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --ease-emphasized: cubic-bezier(0.05, 0.7, 0.1, 1);
+}
+
+:root {
+  /* Used as `duration-(--duration-quick)`. */
+  --duration-instant: 80ms;
+  --duration-quick: 160ms;
+  --duration-base: 240ms;
+  --duration-slow: 400ms;
+}
+
+body {
+  @apply bg-paper font-sans text-ink antialiased;
+}
