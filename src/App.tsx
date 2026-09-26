@@ -3,7 +3,7 @@ import { ListDemo, ModalDemo, ToastDemo } from '@/choreography'
 import { cn } from '@/lib/cn'
 import { MotionConfigProvider, Reveal } from '@/motion'
 import { ControlPanel, DemoCard, HeroToy, PlaybackProvider, PrimitiveReference, TokenReference } from '@/playground'
-import { decisionsUrl, site } from '@/site'
+import { site } from '@/site'
 // `?url` gives the file's URL instead of its parsed contents, so it can be downloaded as-is.
 import tokensUrl from '@/tokens/tokens.json?url'
 import { keyClasses } from '@/ui/Button'
@@ -161,11 +161,6 @@ function Closing() {
           {site.repoUrl && (
             <a href={site.repoUrl} className={linkClass}>
               Source
-            </a>
-          )}
-          {decisionsUrl && (
-            <a href={decisionsUrl} className={linkClass}>
-              Decisions log
             </a>
           )}
         </div>
