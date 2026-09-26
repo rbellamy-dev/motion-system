@@ -21,7 +21,7 @@ export function ListDemo() {
   const remove = (id: number) => setItems((prev) => prev.filter((item) => item.id !== id))
 
   return (
-    <div className="flex h-full flex-col gap-3 p-4">
+    <div className="flex h-full flex-col gap-3 p-3">
       <div className="flex gap-2">
         <Button size="sm" onClick={add}>
           Add item
@@ -31,18 +31,26 @@ export function ListDemo() {
         </Button>
       </div>
 
-      <Stagger key={replayKey} gap="loose" className="flex-1 space-y-2 overflow-y-auto">
-        {items.map((item) => (
-          <StaggerItem key={item.id}>
-            <div className="flex items-center justify-between rounded-lg bg-surface px-3 py-2 text-sm ring-1 ring-line">
-              <span>{item.label}</span>
-              <Button size="sm" variant="ghost" onClick={() => remove(item.id)} aria-label={`Remove ${item.label}`}>
-                ✕
-              </Button>
-            </div>
-          </StaggerItem>
-        ))}
-      </Stagger>
+      <div className="relative min-h-0 flex-1">
+        <Stagger key={replayKey} gap="loose" className="h-full overflow-y-auto">
+          {items.map((item) => (
+            <StaggerItem key={item.id}>
+              <div className="flex items-center justify-between border-b-2 border-ink/10 py-1 pr-1 pl-1">
+                <span>{item.label}</span>
+                <Button size="sm" variant="ghost" onClick={() => remove(item.id)} aria-label={`Remove ${item.label}`}>
+                  ✕
+                </Button>
+              </div>
+            </StaggerItem>
+          ))}
+        </Stagger>
+
+        {items.length === 0 && (
+          <p className="absolute inset-0 grid place-items-center px-6 text-center text-sm text-muted">
+            All clear. Add an item to watch it arrive.
+          </p>
+        )}
+      </div>
     </div>
   )
 }

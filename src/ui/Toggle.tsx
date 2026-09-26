@@ -16,11 +16,11 @@ export function Toggle({ label, checked, onChange, description, disabled }: Togg
   return (
     <div className="flex items-start justify-between gap-4">
       <div>
-        <p id={labelId} className="text-sm font-medium">
+        <p id={labelId} className="font-bold">
           {label}
         </p>
         {description && (
-          <p id={descriptionId} className="mt-0.5 text-xs text-muted">
+          <p id={descriptionId} className="mt-0.5 text-sm text-muted">
             {description}
           </p>
         )}
@@ -34,18 +34,18 @@ export function Toggle({ label, checked, onChange, description, disabled }: Togg
         disabled={disabled}
         onClick={() => onChange(!checked)}
         className={cn(
-          'relative h-6 w-10 shrink-0 rounded-full',
+          'relative h-7 w-12 shrink-0 rounded-full border-2 border-ink',
           'transition-colors duration-(--duration-quick) ease-standard',
-          'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+          'focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-easing',
           'disabled:opacity-50',
-          checked ? 'bg-accent' : 'bg-line',
+          checked ? 'bg-accent' : 'bg-paper',
         )}
       >
         <span
           className={cn(
-            'absolute top-1 left-1 size-4 rounded-full bg-surface shadow-sm',
+            'absolute top-0.5 left-0.5 size-5 rounded-full border-2 border-ink bg-surface',
             'full-motion:transition-transform full-motion:duration-(--duration-quick) full-motion:ease-standard',
-            checked && 'translate-x-4',
+            checked && 'translate-x-5',
           )}
         />
       </button>

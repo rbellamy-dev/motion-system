@@ -1,5 +1,6 @@
 export { ControlPanel } from './ControlPanel'
 export { DemoCard } from './DemoCard'
+export { HeroToy } from './HeroToy'
+export { PlaybackProvider, usePlayback } from './playback'
 export { PrimitiveReference } from './PrimitiveReference'
 export { TokenReference } from './TokenReference'
-export { ThemeSwitcher } from './ThemeSwitcher' // TEMPORARY

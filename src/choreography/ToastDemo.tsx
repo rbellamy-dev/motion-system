@@ -36,20 +36,29 @@ export function ToastDemo() {
   }
 
   return (
-    <div className="relative flex h-full flex-col items-center p-4">
+    <div className="relative h-full p-3">
       <Button size="sm" onClick={show}>
         Show toast
       </Button>
 
+      {toasts.length === 0 && (
+        <p
+          aria-hidden="true"
+          className="absolute inset-x-4 bottom-4 grid h-24 place-items-center rounded-xl border-2 border-dashed border-ink/25 text-sm text-muted"
+        >
+          Toasts stack here.
+        </p>
+      )}
+
       <Stagger role="status" aria-live="polite" className="absolute inset-x-4 bottom-4 flex flex-col gap-2">
         {toasts.map((toast) => (
           <StaggerItem key={toast.id} spring="gentle">
-            <div className="flex items-center justify-between rounded-xl bg-ink px-4 py-3 text-sm text-paper shadow-lg">
+            <div className="flex items-center justify-between rounded-xl border-2 border-ink bg-ink px-4 py-3 text-paper">
               <span>{toast.message}</span>
               <button
                 type="button"
                 onClick={() => dismiss(toast.id)}
-                className="text-paper/60 transition-colors duration-(--duration-quick) ease-standard hover:text-paper"
+                className="rounded-md px-1 text-paper/70 transition-colors duration-(--duration-quick) ease-standard hover:text-paper focus-visible:outline-3 focus-visible:outline-easing"
                 aria-label="Dismiss"
               >
                 ✕
