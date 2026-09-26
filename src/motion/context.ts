@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react'
 import { motionTokens, type MotionTokens, type SpringConfig, type SpringToken } from '@/tokens'
 
-/** The knobs the playground can turn. Tokens stay the source of truth; these are live overrides. */
+/** The knobs the playground can turn. tokens.json stays the source of truth; these are live overrides. */
 export interface MotionSettings {
   /** Multiplies every duration and stagger. 1 = as designed. */
   timeScale: number
@@ -17,7 +17,7 @@ export const defaultSettings: MotionSettings = {
 }
 
 export interface MotionContextValue {
-  /** Tokens after settings are applied. Primitives read these, never the raw token file. */
+  /** Tokens after settings are applied. Primitives read these, never tokens.json directly. */
   tokens: MotionTokens
   settings: MotionSettings
   updateSettings: (patch: Partial<MotionSettings>) => void

@@ -1,7 +1,7 @@
 import { useCallback, useLayoutEffect, useMemo, useState, type ReactNode } from 'react'
 import { MotionConfig, useReducedMotion as useOsReducedMotion } from 'motion/react'
 import { motionTokens, scaleTokens, toCssVars } from '@/tokens'
-import { MotionContext, defaultSettings, type MotionSettings } from './context'
+import { MotionContext, defaultSettings, type MotionContextValue, type MotionSettings } from './context'
 
 export function MotionConfigProvider({ children }: { children: ReactNode }) {
   const [settings, setSettings] = useState<MotionSettings>(defaultSettings)
@@ -26,13 +26,13 @@ export function MotionConfigProvider({ children }: { children: ReactNode }) {
     document.documentElement.toggleAttribute('data-reduced-motion', reducedMotion)
   }, [reducedMotion])
 
-  const updateSettings = useCallback((patch: Partial<MotionSettings>) => {
+  const updateSettings = useCallback<MotionContextValue['updateSettings']>((patch) => {
     setSettings((prev) => ({ ...prev, ...patch }))
   }, [])
 
   const resetSettings = useCallback(() => setSettings(defaultSettings), [])
 
-  const value = useMemo(
+  const value = useMemo<MotionContextValue>(
     () => ({ tokens, settings, updateSettings, resetSettings, reducedMotion, osReducedMotion }),
     [tokens, settings, updateSettings, resetSettings, reducedMotion, osReducedMotion],
   )

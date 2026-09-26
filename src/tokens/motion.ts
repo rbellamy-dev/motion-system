@@ -1,8 +1,9 @@
 /**
- * Motion tokens: the single source of truth for how things move.
- * Everything else (CSS variables, primitives, demos) reads from here.
- * Times are in milliseconds; the motion layer converts them to seconds.
+ * Reads tokens.json (W3C DTCG format) and turns it into typed values the app can use.
+ * tokens.json is the single source of truth: change or add tokens there, never here.
+ * Token names are derived from the JSON, so a new token is instantly a valid, type-checked option.
  */
+import tokenFile from './tokens.json'
 
 export type CubicBezier = readonly [number, number, number, number]
 
@@ -13,56 +14,17 @@ export interface SpringConfig {
   bounce: number
 }
 
-/** How long a transition takes. Bigger elements and bigger moves get longer durations. */
-export const duration = {
-  instant: 80,
-  quick: 160,
-  base: 240,
-  slow: 400,
-} as const
+const source = tokenFile.motion
 
-/** The shape of a transition over time. */
-export const easing = {
-  /** Things moving within the screen. */
-  standard: [0.2, 0, 0, 1],
-  /** Things arriving: start fast, settle gently. */
-  enter: [0, 0, 0.2, 1],
-  /** Things leaving: start gently, accelerate away. */
-  exit: [0.4, 0, 1, 1],
-  /** Hero moments that deserve extra attention. */
-  emphasized: [0.05, 0.7, 0.1, 1],
-} as const satisfies Record<string, CubicBezier>
+/** Token names in a group, skipping DTCG metadata like `$type` and `$description`. */
+type TokenNames<Group> = Exclude<keyof Group, `$${string}`>
 
-/** Physics-based motion for things the user directly causes. */
-export const spring = {
-  snappy: { duration: 200, bounce: 0 },
-  gentle: { duration: 400, bounce: 0.1 },
-  bouncy: { duration: 450, bounce: 0.4 },
-} as const satisfies Record<string, SpringConfig>
-
-/** Delay between siblings entering one after another. */
-export const stagger = {
-  tight: 30,
-  loose: 60,
-} as const
-
-/** How far things travel when entering or leaving, in px. */
-export const distance = {
-  sm: 8,
-  md: 16,
-} as const
-
-/** Starting scale for things that grow into place (1 = full size). */
-export const scale = {
-  subtle: 0.96,
-} as const
-
-export type DurationToken = keyof typeof duration
-export type EasingToken = keyof typeof easing
-export type SpringToken = keyof typeof spring
-export type StaggerToken = keyof typeof stagger
-export type DistanceToken = keyof typeof distance
-export type ScaleToken = keyof typeof scale
+export type DurationToken = TokenNames<typeof source.duration>
+export type EasingToken = TokenNames<typeof source.easing>
+export type SpringToken = TokenNames<typeof source.spring>
+export type StaggerToken = TokenNames<typeof source.stagger>
+export type DistanceToken = TokenNames<typeof source.distance>
+export type ScaleToken = TokenNames<typeof source.scale>
 
 export interface MotionTokens {
   duration: Record<DurationToken, number>
@@ -73,4 +35,58 @@ export interface MotionTokens {
   scale: Record<ScaleToken, number>
 }
 
-export const motionTokens: MotionTokens = { duration, easing, spring, stagger, distance, scale }
+export type TokenGroup = keyof MotionTokens
+
+// --- Converters: DTCG values → plain numbers ---------------------------------------------
+
+interface UnitValue {
+  value: number
+  unit: string
+}
+
+function toMs({ value, unit }: UnitValue): number {
+  if (unit === 'ms') return value
+  if (unit === 's') return value * 1000
+  throw new Error(`tokens.json: unsupported duration unit "${unit}"`)
+}
+
+const ROOT_FONT_SIZE_PX = 16
+
+function toPx({ value, unit }: UnitValue): number {
+  if (unit === 'px') return value
+  if (unit === 'rem') return value * ROOT_FONT_SIZE_PX
+  throw new Error(`tokens.json: unsupported dimension unit "${unit}"`)
+}
+
+function toCubicBezier(value: number[]): CubicBezier {
+  if (value.length !== 4) throw new Error(`tokens.json: cubicBezier needs 4 numbers, got ${value.length}`)
+  const [x1, y1, x2, y2] = value
+  return [x1, y1, x2, y2]
+}
+
+/** Runs `read` over every token in a group and keeps the names as typed keys. */
+function readGroup<Group extends object, Result>(
+  group: Group,
+  read: (token: Group[TokenNames<Group>]) => Result,
+): Record<TokenNames<Group>, Result> {
+  const entries = Object.entries(group)
+    .filter(([name]) => !name.startsWith('$'))
+    .map(([name, token]) => [name, read(token as Group[TokenNames<Group>])])
+  return Object.fromEntries(entries) as Record<TokenNames<Group>, Result>
+}
+
+// --- The tokens -----------------------------------------------------------------------------
+
+export const motionTokens: MotionTokens = {
+  duration: readGroup(source.duration, (t) => toMs(t.$value)),
+  easing: readGroup(source.easing, (t) => toCubicBezier(t.$value)),
+  spring: readGroup(source.spring, (t) => ({ duration: toMs(t.duration.$value), bounce: t.bounce.$value })),
+  stagger: readGroup(source.stagger, (t) => toMs(t.$value)),
+  distance: readGroup(source.distance, (t) => toPx(t.$value)),
+  scale: readGroup(source.scale, (t) => t.$value),
+}
+
+/** Token names in file order, for UIs that list every token (playground, docs). */
+export function tokenNames<G extends TokenGroup>(group: G): (keyof MotionTokens[G])[] {
+  return Object.keys(motionTokens[group]) as (keyof MotionTokens[G])[]
+}
