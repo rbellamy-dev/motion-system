@@ -1,12 +1,16 @@
 import type { ReactNode } from 'react'
 import { ListDemo, ModalDemo, ToastDemo } from '@/choreography'
-import { cn } from '@/lib/cn'
 import { MotionConfigProvider, Reveal } from '@/motion'
-import { ControlPanel, DemoCard, HeroToy, PlaybackProvider, PrimitiveReference, TokenReference } from '@/playground'
+import {
+  ControlPanel,
+  DemoCard,
+  HeroToy,
+  PlaybackProvider,
+  PrimitiveReference,
+  TokenDownload,
+  TokenReference,
+} from '@/playground'
 import { site } from '@/site'
-// `?url` gives the file's URL instead of its parsed contents, so it can be downloaded as-is.
-import tokensUrl from '@/tokens/tokens.json?url'
-import { keyClasses } from '@/ui/Button'
 
 const DEMOS = [
   {
@@ -53,18 +57,7 @@ export default function App() {
                 every pattern is built only from primitives. Change a token and the whole page follows.
               </p>
               <div className="mt-6 flex flex-wrap items-center gap-3">
-                <a
-                  href={tokensUrl}
-                  download="tokens.json"
-                  className={cn(
-                    'inline-flex h-11 items-center rounded-xl bg-surface px-5 font-bold hover:bg-paper',
-                    'transition duration-(--duration-instant) ease-standard',
-                    'focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-easing',
-                    keyClasses,
-                  )}
-                >
-                  Download tokens.json
-                </a>
+                <TokenDownload />
                 {site.repoUrl && (
                   <a href={site.repoUrl} className={linkClass}>
                     Source

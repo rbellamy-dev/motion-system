@@ -1,4 +1,5 @@
 export { Button } from './Button'
-export { Slider } from './Slider'
+export { SegmentedControl } from './SegmentedControl'
 export { Select } from './Select'
+export { Slider } from './Slider'
 export { Toggle } from './Toggle'

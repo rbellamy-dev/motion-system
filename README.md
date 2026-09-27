@@ -29,6 +29,8 @@ All values live in [`src/tokens/tokens.json`](src/tokens/tokens.json), in the [W
 - **Add a token** (e.g. a new duration): add it to `tokens.json`. It becomes a valid, type-checked name everywhere, and the playground shows it automatically.
 - **Add a new kind of token** (e.g. rotation): needs code, because a primitive has to learn to use it.
 
+The page's download offers three formats, all from the same committed file: **JSON** (the file itself), **TypeScript** (typed constants plus token-name types) and **CSS** (custom properties on `:root`). TS and CSS are generated on click by `src/tokens/exporters.ts`, so they can't drift from the JSON. CSS has no spring timing function, so springs export as a duration and bounce for JavaScript to read.
+
 `tokens/motion.ts` never holds values. It reads the JSON, converts DTCG values (`{ "value": 160, "unit": "ms" }` → `160`), validates them, and derives the token names as TypeScript types. Springs have no DTCG type, so each one is a group of a `duration` and a `number` (bounce).
 
 ## How a token reaches the screen
