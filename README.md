@@ -10,28 +10,56 @@ npm run build    # type-check + production build
 
 ## Three layers
 
-```
-1. Tokens        src/tokens/        durations, easings, springs, stagger, distance, scale
-        ↓                            (tokens.json is the single source of truth)
-2. Primitives    src/motion/        Reveal · Presence · Stagger · Move · Shuttle · useMotionToken
-        ↓                            (the only code that imports the `motion` library)
-3. Patterns      src/patterns/      Modal · List · Toast
-                                     (built only from primitives, with no timing values of their own)
-```
+Each layer only uses the one above it.
 
-`src/playground/` is the page UI (hero instrument, token races and tuning, control panel, export, demo cards, playback/pause) and `src/ui/` holds plain inputs (Button, Slider, Select, Toggle, SegmentedControl, CurveEditor). Links live in `src/site.ts`.
+| Layer | Folder | What it is |
+|---|---|---|
+| **1. Tokens** | `src/tokens/` | The numbers: durations, easings, springs, stagger, distance, scale. All in `tokens.json`. |
+| **2. Primitives** | `src/motion/` | Components that turn tokens into movement: `Reveal`, `Presence`, `Stagger`, `Move`, `Shuttle`. The only code that uses the animation library. |
+| **3. Patterns** | `src/patterns/` | Real UI built only from primitives: modal, list, toast. No timing values of their own. |
+
+The rest of the code:
+
+- **`src/playground/`**: the demo page (hero instrument, token races, tuning, controls, export).
+- **`src/ui/`**: plain inputs (Button, Slider, Select, Toggle, SegmentedControl, CurveEditor).
 
 ## tokens.json is the source of truth
 
-All values live in [`src/tokens/tokens.json`](src/tokens/tokens.json), in the [W3C Design Tokens (DTCG)](https://www.designtokens.org/) format that tools like Tokens Studio and Style Dictionary read.
+Every motion value lives in one file: [`src/tokens/tokens.json`](src/tokens/tokens.json). It uses the [W3C Design Tokens (DTCG)](https://www.designtokens.org/) format, so tools like Tokens Studio and Style Dictionary can read it too.
 
-- **Change a value:** edit `tokens.json`. No code changes. The dev server hot-reloads, so the playground shows the change immediately.
-- **Add a token** (e.g. a new duration): add it to `tokens.json`. It becomes a valid, type-checked name everywhere, and the playground shows it automatically.
-- **Add a new kind of token** (e.g. rotation): needs code, because a primitive has to learn to use it.
+### Changing tokens
 
-The page's download offers three formats, all from the same committed file: **JSON** (the file itself), **TypeScript** (typed constants plus token-name types) and **CSS** (custom properties on `:root`). TS and CSS are generated on click by `src/tokens/exporters.ts`, so they can't drift from the JSON. After tuning tokens in the playground (the **Tune** button on each token panel), you choose whether to export your **tuned** values or the **original** file; tuned JSON keeps every `$type` and `$description` and only swaps values. Time scale is playback speed, so it's never exported. CSS has no spring timing function, so springs export as a duration and bounce for JavaScript to read.
+| To… | Do this | Code changes? |
+|---|---|---|
+| Change a value | Edit `tokens.json`. The playground updates instantly. | None |
+| Add a token (e.g. a new duration) | Add it to `tokens.json`. It appears in the playground and becomes a type-checked name. | None |
+| Add a new kind of token (e.g. rotation) | Teach a primitive how to use it. | Yes |
 
-`tokens/motion.ts` never holds values. It reads the JSON, converts DTCG values (`{ "value": 160, "unit": "ms" }` → `160`), validates them, and derives the token names as TypeScript types. Springs have no DTCG type, so each one is a group of a `duration` and a `number` (bounce).
+### Exporting tokens
+
+Download the tokens from the playground in three formats:
+
+| Format | What you get |
+|---|---|
+| **JSON** | The `tokens.json` file itself |
+| **TypeScript** | Typed constants, plus types for every token name |
+| **CSS** | Custom properties on `:root` |
+
+- **They never drift apart.** TypeScript and CSS are generated from the JSON when you click download (`src/tokens/exporters.ts`).
+- **Tuned or original.** After tuning in the playground (the **Tune** button on each panel), choose whether to export your tuned values or the original file. Tuned JSON keeps every `$type` and `$description`; only the values change.
+- **Time scale is never exported.** It's playback speed for previewing, not a token.
+- **Springs in CSS:** CSS has no spring timing, so springs export as a duration and a bounce for JavaScript to read.
+
+### How the code reads them
+
+`src/tokens/motion.ts` holds no values of its own. It:
+
+1. reads `tokens.json`
+2. converts DTCG values into plain numbers (`{ "value": 160, "unit": "ms" }` → `160`)
+3. checks them (for example, easing curves must stay within 0–1)
+4. turns the token names into TypeScript types, so a typo like `'bouncyy'` is caught
+
+Springs have no DTCG type, so each spring is a small group: a `duration` plus a `number` for bounce.
 
 ## How a token reaches the screen
 
