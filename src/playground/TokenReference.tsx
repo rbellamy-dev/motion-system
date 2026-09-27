@@ -2,7 +2,7 @@ import { useState, type ReactNode, type RefObject } from 'react'
 import { Move, Presence, Stagger, StaggerItem, useMotionContext, useMotionToken } from '@/motion'
 import { cn } from '@/lib/cn'
 import { countChangedTokens, isTokenChanged, tokenNames, type TokenGroup } from '@/tokens'
-import { Button, Slider } from '@/ui'
+import { Button, CurveEditor, Slider } from '@/ui'
 import { TONES, type Tone } from './tones'
 import { usePreviewLoop } from './usePreviewLoop'
 
@@ -71,10 +71,31 @@ export function TokenReference() {
         }
       </RacePanel>
 
-      <RacePanel tone="easing" title="Easing" note="Same length, different shapes. Watch where each speeds up." interval={interval}>
+      <RacePanel
+        tone="easing"
+        title="Easing"
+        note="Same length, different shapes. Watch where each speeds up."
+        interval={interval}
+        tune={tuneProps('easing')}
+      >
         {(on) =>
           EASINGS.map((name) => (
-            <RaceRow key={name} name={name} value={`[${live.easing[name].join(', ')}]`}>
+            <RaceRow
+              key={name}
+              name={name}
+              value={`[${live.easing[name].join(', ')}]`}
+              changed={isTokenChanged(base, 'easing', name)}
+              controlFirst
+              control={control(
+                'easing',
+                <CurveEditor
+                  label={name}
+                  value={base.easing[name]}
+                  onChange={(curve) => setToken('easing', name, curve)}
+                  className="size-28 sm:size-36"
+                />,
+              )}
+            >
               <Track on={on}>
                 <Move duration="slow" ease={name} className={cn(DOT, TONES.easing)} />
               </Track>
@@ -229,12 +250,15 @@ function RaceRow({
   value,
   changed = false,
   control,
+  controlFirst = false,
   children,
 }: {
   name: string
   value: string
   changed?: boolean
   control?: ReactNode
+  /** Put the control before the race (for tall controls like the curve editor), vertically centred. */
+  controlFirst?: boolean
   children: ReactNode
 }) {
   const race = (
@@ -257,6 +281,17 @@ function RaceRow({
   )
 
   if (!control) return race
+
+  if (controlFirst) {
+    return (
+      <div className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-4 sm:gap-6">
+        <Presence show variant="fade">
+          {control}
+        </Presence>
+        {race}
+      </div>
+    )
+  }
 
   return (
     <div className="grid items-end gap-x-10 gap-y-3 lg:grid-cols-2">

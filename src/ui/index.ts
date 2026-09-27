@@ -1,4 +1,5 @@
 export { Button } from './Button'
+export { CurveEditor, type Curve } from './CurveEditor'
 export { SegmentedControl } from './SegmentedControl'
 export { Select } from './Select'
 export { Slider } from './Slider'
