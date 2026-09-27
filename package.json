@@ -2,6 +2,18 @@
   "name": "motion-system",
   "private": true,
   "version": "0.1.0",
+  "description": "A motion system in three layers: tokens, primitives and patterns, with a playground to tune springs and easing curves and export the tokens as JSON, TypeScript or CSS.",
+  "keywords": [
+    "motion",
+    "design-tokens",
+    "design-system",
+    "animation",
+    "react",
+    "typescript",
+    "tailwindcss",
+    "framer-motion",
+    "dtcg"
+  ],
   "type": "module",
   "scripts": {
     "dev": "vite",

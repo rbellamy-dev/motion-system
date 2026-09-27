@@ -1,6 +1,6 @@
 # Motion System
 
-A small motion system: tokens, primitives that read them, and real UI patterns built only from those primitives. It ships with a playground where you can change tokens live and watch every demo follow.
+A motion system in three layers: tokens, primitives that read them, and real UI patterns built only from those primitives. It ships with a playground where you tune springs and drag easing curves live, watch every demo follow, then export the tokens as JSON, TypeScript or CSS.
 
 ```bash
 npm install
