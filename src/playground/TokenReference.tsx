@@ -11,7 +11,8 @@ const DURATIONS = tokenNames('duration')
 const EASINGS = tokenNames('easing')
 const SPRINGS = tokenNames('spring')
 const STAGGERS = tokenNames('stagger')
-const STAGGER_DOTS = 5
+/** Enough squares that tight and loose finish at clearly different moments (270ms vs 540ms at the defaults). */
+const STAGGER_DOTS = 10
 /** Each loop waits this many "slow" durations, so even the slowest token finishes and rests. */
 const LOOP_HOLD = 3
 
@@ -184,10 +185,10 @@ export function TokenReference() {
               )}
             >
               {/* Changing the key remounts the list, replaying the stagger each loop. */}
-              <Stagger key={String(on)} gap={name} className="flex h-10 items-center gap-2">
+              <Stagger key={String(on)} gap={name} className="flex h-10 items-center gap-1.5 sm:gap-2">
                 {Array.from({ length: STAGGER_DOTS }, (_, i) => (
-                  <StaggerItem key={i}>
-                    <div className={cn('size-6 rounded-md border-2 border-ink', TONES.stagger)} />
+                  <StaggerItem key={i} distance="md">
+                    <div className={cn('size-5 rounded-md border-2 border-ink sm:size-6', TONES.stagger)} />
                   </StaggerItem>
                 ))}
               </Stagger>
