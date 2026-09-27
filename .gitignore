@@ -7,3 +7,5 @@ dist
 DECISIONS.md
 PRODUCT.md
 .impeccable/
+.vercel
+.env*
