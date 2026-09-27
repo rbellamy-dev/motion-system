@@ -1,9 +1,10 @@
 /**
  * Turns the tokens into downloadable files. tokens.json stays the only source:
- * JSON is the file itself, and CSS / TypeScript are generated from the same values on demand,
- * so the three formats can never drift apart.
+ * untouched tokens export as the file itself; tuned tokens are written back into the same
+ * DTCG structure. CSS and TypeScript are generated from the same values, so formats never drift.
  */
 import tokensJson from './tokens.json?raw'
+import { countChangedTokens } from './diff'
 import { motionTokens, type MotionTokens } from './motion'
 import { toCssVars } from './toCssVars'
 
@@ -77,6 +78,32 @@ export function toTypeScript(tokens: MotionTokens): string {
   ].join('\n')
 }
 
+type DtcgNode = Record<string, unknown> & { $value?: unknown }
+type DtcgGroup = Record<string, DtcgNode>
+
+/**
+ * tokens.json with new values written in. Only `$value`s change, so `$type`, `$description`
+ * and the file's structure survive the round trip.
+ */
+export function toDtcgJson(tokens: MotionTokens): string {
+  const file = JSON.parse(tokensJson) as { motion: Record<string, DtcgGroup> }
+  const groups = file.motion
+  const unit = (value: number, u: string) => ({ value, unit: u })
+
+  for (const [name, v] of Object.entries(tokens.duration)) groups.duration[name].$value = unit(v, 'ms')
+  for (const [name, v] of Object.entries(tokens.easing)) groups.easing[name].$value = [...v]
+  for (const [name, v] of Object.entries(tokens.stagger)) groups.stagger[name].$value = unit(v, 'ms')
+  for (const [name, v] of Object.entries(tokens.distance)) groups.distance[name].$value = unit(v, 'px')
+  for (const [name, v] of Object.entries(tokens.scale)) groups.scale[name].$value = v
+  for (const [name, { duration, bounce }] of Object.entries(tokens.spring)) {
+    const spring = groups.spring[name] as Record<string, DtcgNode>
+    spring.duration.$value = unit(duration, 'ms')
+    spring.bounce.$value = bounce
+  }
+
+  return `${JSON.stringify(file, null, 2)}\n`
+}
+
 function formatValue(value: unknown): string {
   if (Array.isArray(value)) return `[${value.join(', ')}]`
   if (value && typeof value === 'object') {
@@ -85,11 +112,17 @@ function formatValue(value: unknown): string {
   return String(value)
 }
 
-/** The committed tokens as a file in the chosen format. Playground edits and Time scale never leak in. */
+/**
+ * Tokens as a file in the chosen format. Pass tuned tokens to export them; by default it's
+ * the committed tokens.json. Time scale is never part of `tokens`, so it can't leak in.
+ */
 export function exportTokens(format: ExportFormat, tokens: MotionTokens = motionTokens): TokenFile {
   switch (format) {
-    case 'json':
-      return { filename: 'tokens.json', mimeType: 'application/json', content: tokensJson }
+    case 'json': {
+      // Untouched tokens export byte-for-byte as the committed file.
+      const content = countChangedTokens(tokens) === 0 ? tokensJson : toDtcgJson(tokens)
+      return { filename: 'tokens.json', mimeType: 'application/json', content }
+    }
     case 'ts':
       return { filename: 'tokens.ts', mimeType: 'text/typescript', content: toTypeScript(tokens) }
     case 'css':

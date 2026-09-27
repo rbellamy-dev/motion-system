@@ -1,7 +1,7 @@
 import { useCallback, useLayoutEffect, useMemo, useState, type ReactNode } from 'react'
 import { MotionConfig, useReducedMotion as useOsReducedMotion } from 'motion/react'
 import { motionTokens, scaleTokens, toCssVars } from '@/tokens'
-import { MotionContext, defaultSettings, type MotionContextValue, type MotionSettings } from './context'
+import { MotionContext, defaultSettings, type MotionContextValue, type MotionSettings, type SetToken } from './context'
 
 export function MotionConfigProvider({ children }: { children: ReactNode }) {
   const [settings, setSettings] = useState<MotionSettings>(defaultSettings)
@@ -9,8 +9,8 @@ export function MotionConfigProvider({ children }: { children: ReactNode }) {
   const reducedMotion = osReducedMotion || settings.reducedMotion
 
   const tokens = useMemo(
-    () => scaleTokens({ ...motionTokens, spring: settings.springs }, settings.timeScale),
-    [settings.springs, settings.timeScale],
+    () => scaleTokens(settings.tokens, settings.timeScale),
+    [settings.tokens, settings.timeScale],
   )
 
   // Keep CSS variables in sync so CSS transitions follow the same live tokens.
@@ -30,11 +30,25 @@ export function MotionConfigProvider({ children }: { children: ReactNode }) {
     setSettings((prev) => ({ ...prev, ...patch }))
   }, [])
 
+  const setToken = useCallback<SetToken>((group, name, value) => {
+    setSettings((prev) => ({
+      ...prev,
+      tokens: { ...prev.tokens, [group]: { ...prev.tokens[group], [name]: value } },
+    }))
+  }, [])
+
+  const resetTokens = useCallback<MotionContextValue['resetTokens']>((group) => {
+    setSettings((prev) => ({
+      ...prev,
+      tokens: group ? { ...prev.tokens, [group]: motionTokens[group] } : motionTokens,
+    }))
+  }, [])
+
   const resetSettings = useCallback(() => setSettings(defaultSettings), [])
 
   const value = useMemo<MotionContextValue>(
-    () => ({ tokens, settings, updateSettings, resetSettings, reducedMotion, osReducedMotion }),
-    [tokens, settings, updateSettings, resetSettings, reducedMotion, osReducedMotion],
+    () => ({ tokens, settings, updateSettings, setToken, resetTokens, resetSettings, reducedMotion, osReducedMotion }),
+    [tokens, settings, updateSettings, setToken, resetTokens, resetSettings, reducedMotion, osReducedMotion],
   )
 
   return (

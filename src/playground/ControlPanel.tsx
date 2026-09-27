@@ -1,19 +1,12 @@
-import { useState } from 'react'
 import { useMotionContext } from '@/motion'
-import { tokenNames, type SpringConfig, type SpringToken } from '@/tokens'
-import { Button, Select, Slider, Toggle } from '@/ui'
+import { Button, Slider, Toggle } from '@/ui'
 import { usePlayback } from './playback'
+import { TokenDownload } from './TokenDownload'
 
-const SPRING_NAMES = tokenNames('spring')
-
+/** Page-wide playback and accessibility. Individual tokens are tuned on their panels. */
 export function ControlPanel() {
   const { settings, updateSettings, resetSettings, osReducedMotion } = useMotionContext()
   const { paused, setPaused } = usePlayback()
-  const [editing, setEditing] = useState<SpringToken>('bouncy')
-  const spring = settings.springs[editing]
-
-  const updateSpring = (patch: Partial<SpringConfig>) =>
-    updateSettings({ springs: { ...settings.springs, [editing]: { ...spring, ...patch } } })
 
   return (
     <aside aria-labelledby="controls-title" className="space-y-6 rounded-[1.25rem] border-2 border-ink bg-surface p-5">
@@ -21,7 +14,7 @@ export function ControlPanel() {
         <h2 id="controls-title" className="text-xl font-extrabold">
           Controls
         </h2>
-        <p className="text-muted">Change these and the whole page follows, hero included.</p>
+        <p className="text-muted">Playback for the whole page. Tune individual tokens on their panels.</p>
       </div>
 
       <Slider
@@ -33,28 +26,6 @@ export function ControlPanel() {
         format={(v) => `${v}×`}
         onChange={(timeScale) => updateSettings({ timeScale })}
       />
-
-      <fieldset className="space-y-4 border-t-2 border-ink/10 pt-5">
-        <Select label="Edit spring" value={editing} options={SPRING_NAMES} onChange={setEditing} />
-        <Slider
-          label="Duration"
-          value={spring.duration}
-          min={100}
-          max={1000}
-          step={25}
-          format={(v) => `${v}ms`}
-          onChange={(duration) => updateSpring({ duration })}
-        />
-        <Slider
-          label="Bounce"
-          value={spring.bounce}
-          min={0}
-          max={0.8}
-          step={0.05}
-          format={(v) => v.toFixed(2)}
-          onChange={(bounce) => updateSpring({ bounce })}
-        />
-      </fieldset>
 
       <div className="space-y-5 border-t-2 border-ink/10 pt-5">
         <Toggle
@@ -72,8 +43,16 @@ export function ControlPanel() {
         />
       </div>
 
+      <div className="space-y-3 border-t-2 border-ink/10 pt-5">
+        <div>
+          <h3 className="font-bold">Export</h3>
+          <p className="text-sm text-muted">Tuned values export as they are; Time scale never does.</p>
+        </div>
+        <TokenDownload stacked />
+      </div>
+
       <Button variant="secondary" className="w-full" onClick={resetSettings}>
-        Reset to tokens
+        Reset everything
       </Button>
     </aside>
   )

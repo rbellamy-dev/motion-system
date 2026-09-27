@@ -8,9 +8,11 @@ interface SliderProps {
   step: number
   onChange: (value: number) => void
   format?: (value: number) => string
+  /** Hide the visible label and value when the surrounding UI already shows them. Still labelled for screen readers. */
+  hideLabel?: boolean
 }
 
-export function Slider({ label, value, min, max, step, onChange, format = String }: SliderProps) {
+export function Slider({ label, value, min, max, step, onChange, format = String, hideLabel = false }: SliderProps) {
   const id = useId()
 
   const input = (
@@ -22,10 +24,13 @@ export function Slider({ label, value, min, max, step, onChange, format = String
       step={step}
       value={value}
       onChange={(e) => onChange(Number(e.target.value))}
+      aria-label={hideLabel ? label : undefined}
       aria-valuetext={format(value)}
       className="w-full accent-accent focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-easing"
     />
   )
+
+  if (hideLabel) return input
 
   return (
     <div className="space-y-2">

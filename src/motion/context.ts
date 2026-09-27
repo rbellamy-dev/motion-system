@@ -1,26 +1,37 @@
 import { createContext, useContext } from 'react'
-import { motionTokens, type MotionTokens, type SpringConfig, type SpringToken } from '@/tokens'
+import { motionTokens, type MotionTokens, type TokenGroup } from '@/tokens'
 
 /** The knobs the playground can turn. tokens.json stays the source of truth; these are live overrides. */
 export interface MotionSettings {
-  /** Multiplies every duration and stagger. 1 = as designed. */
+  /** An editable copy of the tokens. Starts as tokens.json; reset returns to it. */
+  tokens: MotionTokens
+  /** Multiplies every duration and stagger. 1 = as designed. Playback only, never part of the tokens. */
   timeScale: number
-  springs: Record<SpringToken, SpringConfig>
   /** Playground override. The OS "reduce motion" setting is always respected too. */
   reducedMotion: boolean
 }
 
 export const defaultSettings: MotionSettings = {
+  tokens: motionTokens,
   timeScale: 1,
-  springs: motionTokens.spring,
   reducedMotion: false,
 }
+
+export type SetToken = <G extends TokenGroup, N extends keyof MotionTokens[G]>(
+  group: G,
+  name: N,
+  value: MotionTokens[G][N],
+) => void
 
 export interface MotionContextValue {
   /** Tokens after settings are applied. Primitives read these, never tokens.json directly. */
   tokens: MotionTokens
   settings: MotionSettings
-  updateSettings: (patch: Partial<MotionSettings>) => void
+  updateSettings: (patch: Partial<Omit<MotionSettings, 'tokens'>>) => void
+  /** Overrides one token, e.g. setToken('duration', 'quick', 180). */
+  setToken: SetToken
+  /** Returns one token family (or all tokens) to the values in tokens.json. */
+  resetTokens: (group?: TokenGroup) => void
   resetSettings: () => void
   /** True if either the OS or the playground asks for reduced motion. */
   reducedMotion: boolean

@@ -1,4 +1,5 @@
 export * from './motion'
 export { scaleTokens } from './scaleTokens'
 export { toCssVars } from './toCssVars'
-export { exportTokens, toCss, toTypeScript, EXPORT_FORMATS, type ExportFormat, type TokenFile } from './exporters'
+export { countChangedTokens, isTokenChanged } from './diff'
+export { exportTokens, toCss, toDtcgJson, toTypeScript, EXPORT_FORMATS, type ExportFormat, type TokenFile } from './exporters'
