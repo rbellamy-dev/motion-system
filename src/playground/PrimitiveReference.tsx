@@ -104,7 +104,7 @@ interface PrimitiveCardProps {
   children: ReactNode
 }
 
-/** Stage on top (controls top-left, like the choreography demos), explanation and usage below. */
+/** Stage on top (controls top-left, like the pattern demos), explanation and usage below. */
 function PrimitiveCard({ name, tone, description, code, action, children }: PrimitiveCardProps) {
   return (
     <article className="flex flex-col overflow-hidden rounded-[1.25rem] border-2 border-ink bg-surface">

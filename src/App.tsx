@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { ListDemo, ModalDemo, ToastDemo } from '@/choreography'
+import { ListDemo, ModalDemo, ToastDemo } from '@/patterns'
 import { MotionConfigProvider, Reveal } from '@/motion'
 import {
   ControlPanel,
@@ -80,7 +80,7 @@ export default function App() {
             </div>
 
             <main className="min-w-0 space-y-24">
-              <Section title="Tokens" lede="The raw material. Tokens in the same family race side by side, so you feel the difference instead of reading it.">
+              <Section title="Tokens" lede="The raw material. Tokens in the same family race side by side, so you feel the difference instead of reading it. Tokens build on each other, so tuning one can change others.">
                 <TokenReference />
               </Section>
 

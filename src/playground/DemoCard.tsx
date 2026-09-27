@@ -3,7 +3,7 @@ import { cn } from '@/lib/cn'
 
 interface DemoCardProps {
   title: string
-  /** The choreography rule this demo illustrates. */
+  /** The rule this pattern demonstrates. */
   rule: string
   children: ReactNode
   /** Height class for the stage area. */

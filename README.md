@@ -15,11 +15,11 @@ npm run build    # type-check + production build
         ↓                            (tokens.json is the single source of truth)
 2. Primitives    src/motion/        Reveal · Presence · Stagger · Move · Shuttle · useMotionToken
         ↓                            (the only code that imports the `motion` library)
-3. Choreography  src/choreography/  Modal · List · Toast
+3. Patterns      src/patterns/      Modal · List · Toast
                                      (built only from primitives, with no timing values of their own)
 ```
 
-`src/playground/` is the page UI (hero instrument, token races, control panel, demo cards, playback/pause) and `src/ui/` holds plain atoms (Button, Slider, Select, Toggle). On the page, layer 3 is labelled "Patterns". Author and links live in `src/site.ts`.
+`src/playground/` is the page UI (hero instrument, token races and tuning, control panel, export, demo cards, playback/pause) and `src/ui/` holds plain inputs (Button, Slider, Select, Toggle, SegmentedControl, CurveEditor). Links live in `src/site.ts`.
 
 ## tokens.json is the source of truth
 

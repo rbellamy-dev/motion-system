@@ -7,7 +7,7 @@ interface Item {
   label: string
 }
 
-const LABELS = ['Design tokens', 'Primitives', 'Choreography', 'Reduced motion', 'Case study', 'Storybook', 'Deploy']
+const LABELS = ['Design tokens', 'Primitives', 'Patterns', 'Reduced motion', 'Case study', 'Storybook', 'Deploy']
 const INITIAL_COUNT = 4
 
 const makeItem = (id: number): Item => ({ id, label: LABELS[id % LABELS.length] })

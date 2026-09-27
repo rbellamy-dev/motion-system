@@ -16,7 +16,7 @@ interface PresenceProps {
 
 /**
  * Mounts and unmounts content with an enter and exit animation.
- * Choreography rule baked in: enter with a spring, leave faster with an exit curve.
+ * Rule baked in: enter with a spring, leave faster with an exit curve.
  */
 export function Presence({ show, children, variant = 'rise', spring = 'snappy', className }: PresenceProps) {
   const m = useMotionToken()
