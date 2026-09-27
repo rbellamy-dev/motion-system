@@ -8,8 +8,6 @@ interface StaggerProps {
   /** Delay between each item on first render. */
   gap?: StaggerToken
   className?: string
-  role?: string
-  'aria-live'?: 'polite' | 'assertive' | 'off'
 }
 
 /**
@@ -17,7 +15,7 @@ interface StaggerProps {
  * removed items animate out and their siblings slide into the gap.
  * Children should be <StaggerItem> elements with stable keys.
  */
-export function Stagger({ children, gap = 'tight', className, ...aria }: StaggerProps) {
+export function Stagger({ children, gap = 'tight', className }: StaggerProps) {
   const m = useMotionToken()
   const variants: Variants = {
     hidden: {},
@@ -25,7 +23,7 @@ export function Stagger({ children, gap = 'tight', className, ...aria }: Stagger
   }
 
   return (
-    <motion.ul className={className} variants={variants} initial="hidden" animate="visible" {...aria}>
+    <motion.ul className={className} variants={variants} initial="hidden" animate="visible">
       <AnimatePresence>{children}</AnimatePresence>
     </motion.ul>
   )

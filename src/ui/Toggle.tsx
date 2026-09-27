@@ -35,6 +35,8 @@ export function Toggle({ label, checked, onChange, description, disabled }: Togg
         onClick={() => onChange(!checked)}
         className={cn(
           'relative h-7 w-12 shrink-0 rounded-full border-2 border-ink',
+          // An invisible 8px margin around the switch makes its tap area 44px tall.
+          "before:absolute before:-inset-2 before:content-['']",
           'transition-colors duration-(--duration-quick) ease-standard',
           'focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-easing',
           'disabled:opacity-50',

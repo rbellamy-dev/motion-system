@@ -8,6 +8,9 @@
  */
 @custom-variant full-motion (:root:not([data-reduced-motion]) &);
 
+/* `coarse:` applies on touch screens, where controls need 44px targets; mouse layouts stay compact. */
+@custom-variant coarse (@media (pointer: coarse));
+
 @theme {
   /* One committed family: chunky at 800-900 for display, plain at 400 for reading. Mono is for code only. */
   --font-sans: "Gabarito", ui-sans-serif, system-ui, sans-serif;
@@ -106,4 +109,11 @@ body {
   border: 2px solid var(--color-ink);
   border-radius: 999px;
   background: var(--color-surface);
+}
+
+/* On touch screens the slider's hit area grows to 44px tall; the visible track stays the same. */
+@media (pointer: coarse) {
+  .range {
+    height: 2.75rem;
+  }
 }

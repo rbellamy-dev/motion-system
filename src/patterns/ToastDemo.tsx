@@ -50,23 +50,26 @@ export function ToastDemo() {
         </p>
       )}
 
-      <Stagger role="status" aria-live="polite" className="absolute inset-x-4 bottom-4 flex flex-col gap-2">
-        {toasts.map((toast) => (
-          <StaggerItem key={toast.id} spring="gentle">
-            <div className="flex items-center justify-between rounded-xl border-2 border-ink bg-ink px-4 py-3 text-paper">
-              <span>{toast.message}</span>
-              <button
-                type="button"
-                onClick={() => dismiss(toast.id)}
-                className="rounded-md px-1 text-paper/70 transition-colors duration-(--duration-quick) ease-standard hover:text-paper focus-visible:outline-3 focus-visible:outline-easing"
-                aria-label="Dismiss"
-              >
-                ✕
-              </button>
-            </div>
-          </StaggerItem>
-        ))}
-      </Stagger>
+      {/* The live region is a div: role="status" isn't allowed on a list element. */}
+      <div role="status" aria-live="polite" className="absolute inset-x-4 bottom-4">
+        <Stagger className="flex flex-col gap-2">
+          {toasts.map((toast) => (
+            <StaggerItem key={toast.id} spring="gentle">
+              <div className="flex items-center justify-between rounded-xl border-2 border-ink bg-ink px-4 py-3 text-paper">
+                <span>{toast.message}</span>
+                <button
+                  type="button"
+                  onClick={() => dismiss(toast.id)}
+                  className="rounded-md px-1 text-paper/70 transition-colors duration-(--duration-quick) ease-standard hover:text-paper focus-visible:outline-3 focus-visible:outline-easing"
+                  aria-label="Dismiss"
+                >
+                  ✕
+                </button>
+              </div>
+            </StaggerItem>
+          ))}
+        </Stagger>
+      </div>
     </div>
   )
 }

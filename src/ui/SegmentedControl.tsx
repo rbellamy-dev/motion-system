@@ -29,7 +29,7 @@ export function SegmentedControl<T extends string>({ label, value, options, onCh
           />
           <span
             className={cn(
-              'block cursor-pointer rounded-lg px-3 py-1.5 text-center font-bold whitespace-nowrap',
+              'block cursor-pointer rounded-lg px-3 py-1.5 text-center font-bold whitespace-nowrap coarse:py-2.5',
               'transition-colors duration-(--duration-instant) ease-standard',
               'peer-focus-visible:outline-3 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-easing',
               value === option.value ? 'bg-ink text-paper' : 'text-muted hover:text-ink',

@@ -13,6 +13,19 @@ export function MotionConfigProvider({ children }: { children: ReactNode }) {
     [settings.tokens, settings.timeScale],
   )
 
+  // Development only: index.css repeats the motion values as first-paint fallbacks (Tailwind needs
+  // them to create the ease-* classes). Warn if they ever drift from tokens.json.
+  useLayoutEffect(() => {
+    if (!import.meta.env.DEV) return
+    const css = getComputedStyle(document.documentElement)
+    for (const [name, value] of Object.entries(toCssVars(motionTokens))) {
+      const fallback = css.getPropertyValue(name).trim()
+      if (fallback && fallback.replace(/\s/g, '') !== value.replace(/\s/g, '')) {
+        console.warn(`index.css fallback ${name} is "${fallback}" but tokens.json says "${value}". Update index.css.`)
+      }
+    }
+  }, [])
+
   // Keep CSS variables in sync so CSS transitions follow the same live tokens.
   useLayoutEffect(() => {
     const root = document.documentElement
