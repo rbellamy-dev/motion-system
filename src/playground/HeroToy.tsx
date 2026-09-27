@@ -86,7 +86,7 @@ export function HeroToy() {
             onClick={() => play(tone)}
             aria-label={`Play ${label.toLowerCase()}`}
             className={cn(
-              'flex h-16 flex-col items-start justify-between rounded-xl p-2.5 text-left font-extrabold',
+              'flex min-h-16 flex-col items-start justify-between gap-1 rounded-xl p-2.5 text-left font-extrabold',
               'transition duration-(--duration-instant) ease-standard',
               'focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-easing',
               TONES[tone],

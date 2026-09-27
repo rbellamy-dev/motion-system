@@ -123,7 +123,8 @@ export function TokenReference() {
                 changed={isTokenChanged(base, 'spring', name)}
                 control={control(
                   'spring',
-                  <div className="grid grid-cols-2 gap-4">
+                  // Side by side from 22rem up; stacked on narrow screens or with enlarged text.
+                  <div className="grid gap-x-4 gap-y-3 min-[22rem]:grid-cols-2">
                     <Slider
                       label="Duration"
                       value={spring.duration}
@@ -185,10 +186,13 @@ export function TokenReference() {
               )}
             >
               {/* Changing the key remounts the list, replaying the stagger each loop. */}
-              <Stagger key={String(on)} gap={name} className="flex h-8 items-center gap-1.5 sm:gap-2">
+              {/* Squares spread across a full-width rail, like the other races, so the cascade reads as a wave. */}
+              {/* overflow-hidden: squares rise out of the rail instead of dipping below it. */}
+              <Stagger key={String(on)} gap={name} className="flex h-8 items-center justify-between overflow-hidden rounded-full bg-paper px-2">
                 {Array.from({ length: STAGGER_DOTS }, (_, i) => (
-                  <StaggerItem key={i} distance="md">
-                    <div className={cn('size-4 rounded-md border-2 border-ink sm:size-5', TONES.stagger)} />
+                  // Each square gets an equal share of the rail (capped), so ten always fit, even with enlarged text.
+                  <StaggerItem key={i} distance="md" className="flex min-w-0 flex-1 justify-center">
+                    <div className={cn('aspect-square w-full max-w-4 rounded-md border-2 border-ink sm:max-w-5', TONES.stagger)} />
                   </StaggerItem>
                 ))}
               </Stagger>
@@ -232,7 +236,8 @@ function RacePanel({ tone, title, note, interval, tune, children }: RacePanelPro
     >
       <div className="mb-4 flex flex-wrap items-start gap-3">
         <span aria-hidden="true" className={cn('mt-1 size-4 shrink-0 rounded-full border-2 border-ink', TONES[tone])} />
-        <div className="min-w-0 flex-1">
+        {/* basis keeps room for the heading; with large text the Tune button wraps below instead. */}
+        <div className="min-w-0 flex-1 basis-40">
           <h3 className="text-xl font-extrabold">{title}</h3>
           <p className="text-muted">{note}</p>
         </div>
@@ -291,7 +296,8 @@ function RaceRow({
             </>
           )}
         </p>
-        <p className="font-mono text-xs whitespace-nowrap text-muted tabular-nums">{value}</p>
+        {/* One line on wider screens; on phones with enlarged text it may break between numbers. */}
+        <p className="max-w-full shrink-0 font-mono text-xs text-muted tabular-nums sm:whitespace-nowrap">{value}</p>
       </div>
       {children}
     </div>
@@ -301,7 +307,8 @@ function RaceRow({
 
   if (controlFirst) {
     return (
-      <div className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-4 sm:gap-6">
+      // Side by side from 22rem up; below that (or with enlarged text) the graph sits above the race.
+      <div className="grid items-center gap-4 min-[22rem]:grid-cols-[auto_minmax(0,1fr)] sm:gap-6">
         <Presence show variant="fade">
           {control}
         </Presence>

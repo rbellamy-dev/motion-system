@@ -57,16 +57,27 @@ export default function App() {
   return (
     <MotionConfigProvider>
       <PlaybackProvider>
-        <PageNav title="How things move" links={JUMP_LINKS} />
+        <PageNav title="How things move" titleTargetId="page-title" links={JUMP_LINKS} />
         <div id="top" className="mx-auto max-w-6xl scroll-mt-20 px-4 sm:px-6">
-          <header className="grid items-center gap-10 pt-10 pb-20 lg:grid-cols-[1.1fr_1fr] lg:gap-14 lg:pt-20 lg:pb-28">
-            <Reveal>
-              <h1 className="font-display text-display font-black">How things move.</h1>
+          {/*
+            Phones read top to bottom: headline, instrument, then export, so the demo lands on the first screen.
+            Wide screens put the headline and export on the left and the instrument on the right.
+          */}
+          <header className="grid gap-x-14 gap-y-8 pt-10 pb-20 lg:grid-cols-[1.1fr_1fr] lg:pt-20 lg:pb-28">
+            <Reveal className="lg:self-end">
+              <h1 id="page-title" className="font-display text-display font-black">
+                How things move.
+              </h1>
               <p className="mt-6 max-w-[48ch] text-lg text-muted">
                 A motion system in three layers: tokens hold the numbers, primitives turn them into movement, and
                 every pattern is built only from primitives. Change a token and the whole page follows.
               </p>
-              <div className="mt-6 flex flex-wrap items-center gap-3">
+            </Reveal>
+            <Reveal duration="slow" className="lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center">
+              <HeroToy />
+            </Reveal>
+            <Reveal className="lg:col-start-1 lg:row-start-2">
+              <div className="flex flex-wrap items-center gap-3">
                 <TokenDownload />
                 {site.repoUrl && (
                   <a href={site.repoUrl} className={linkClass}>
@@ -74,9 +85,6 @@ export default function App() {
                   </a>
                 )}
               </div>
-            </Reveal>
-            <Reveal duration="slow">
-              <HeroToy />
             </Reveal>
           </header>
 
@@ -90,7 +98,7 @@ export default function App() {
             </div>
 
             <main className="min-w-0 space-y-20">
-              <Section title="Tokens" lede="The raw material. Tokens in the same family race side by side, so you feel the difference instead of reading it. Tokens build on each other, so tuning one can change others.">
+              <Section reveal={false} title="Tokens" lede="The raw material. Tokens in the same family race side by side, so you feel the difference instead of reading it. Tokens build on each other, so tuning one can change others.">
                 <TokenReference />
               </Section>
 
@@ -119,18 +127,25 @@ export default function App() {
   )
 }
 
-function Section({ title, lede, children }: { title: string; lede: string; children: ReactNode }) {
-  return (
-    <Reveal inView>
-      <section id={title.toLowerCase()} className="scroll-mt-20">
-        <div className="mb-8">
-          <h2 className="font-display text-title font-extrabold">{title}</h2>
-          <p className="mt-3 max-w-[60ch] text-lg text-muted">{lede}</p>
-        </div>
-        {children}
-      </section>
-    </Reveal>
+interface SectionProps {
+  title: string
+  lede: string
+  children: ReactNode
+  /** Fade the section up when it scrolls into view. Off for sections that should simply be there. */
+  reveal?: boolean
+}
+
+function Section({ title, lede, children, reveal = true }: SectionProps) {
+  const section = (
+    <section id={title.toLowerCase()} className="scroll-mt-20">
+      <div className="mb-8">
+        <h2 className="font-display text-title font-extrabold">{title}</h2>
+        <p className="mt-3 max-w-[60ch] text-lg text-muted">{lede}</p>
+      </div>
+      {children}
+    </section>
   )
+  return reveal ? <Reveal inView>{section}</Reveal> : section
 }
 
 function Closing() {
