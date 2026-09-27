@@ -58,8 +58,15 @@ function toPx({ value, unit }: UnitValue): number {
   throw new Error(`tokens.json: unsupported dimension unit "${unit}"`)
 }
 
+/**
+ * Every control point must sit in the unit square. x in [0, 1] is required by CSS; y in [0, 1] is this
+ * system's rule, so easing can never overshoot. Overshoot belongs to springs.
+ */
 function toCubicBezier(value: number[]): CubicBezier {
   if (value.length !== 4) throw new Error(`tokens.json: cubicBezier needs 4 numbers, got ${value.length}`)
+  if (value.some((v) => v < 0 || v > 1)) {
+    throw new Error(`tokens.json: cubicBezier [${value.join(', ')}] must stay within 0–1 (overshoot belongs to springs)`)
+  }
   const [x1, y1, x2, y2] = value
   return [x1, y1, x2, y2]
 }

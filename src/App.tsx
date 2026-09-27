@@ -38,6 +38,7 @@ const RULES = [
   { title: 'Only primitives touch the library.', body: 'One folder imports the animation library. Everything else asks a primitive, so the library could be swapped in one place.' },
   { title: 'Components ask by name.', body: "A component asks for 'quick', never 160. No raw timing lives outside the token file." },
   { title: 'Exits are faster than entrances.', body: 'People care about what is arriving. Leaving things get out of the way.' },
+  { title: 'Overshoot lives in springs.', body: 'Easing curves stay between start and end. Only springs may bounce, and only a little.' },
   { title: 'Reduced motion is designed once.', body: 'Movement becomes a short fade, in one hook, for every primitive. Feedback stays; travel goes.' },
 ]
 

@@ -11,16 +11,17 @@ interface CurveEditorProps {
   className?: string
 }
 
-// SVG units. The plot is inset so handles can overshoot above 1 and below 0.
+// SVG units. The small inset is just room for the handles themselves.
 const SIZE = 100
-const PAD = 22
+const PAD = 12
 const PLOT = SIZE - PAD * 2
 
-// x must stay in [0, 1] for a valid CSS cubic-bezier; y may overshoot for anticipation and overshoot.
+// x must stay in [0, 1] for a valid CSS cubic-bezier. y is also held to [0, 1]: with both handles
+// inside the square, the curve can never overshoot or anticipate. Overshoot belongs to springs.
 const X_MIN = 0
 const X_MAX = 1
-const Y_MIN = -0.5
-const Y_MAX = 1.5
+const Y_MIN = 0
+const Y_MAX = 1
 const STEP = 0.01
 const BIG_STEP = 0.1
 

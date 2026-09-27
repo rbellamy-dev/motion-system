@@ -1,5 +1,5 @@
 import { useState, type ReactNode, type RefObject } from 'react'
-import { Move, Presence, Stagger, StaggerItem, useMotionContext, useMotionToken } from '@/motion'
+import { Move, Presence, Shuttle, Stagger, StaggerItem, useMotionContext, useMotionToken } from '@/motion'
 import { cn } from '@/lib/cn'
 import { countChangedTokens, isTokenChanged, tokenNames, type TokenGroup } from '@/tokens'
 import { Button, CurveEditor, Slider } from '@/ui'
@@ -41,7 +41,13 @@ export function TokenReference() {
 
   return (
     <div className="space-y-5">
-      <RacePanel tone="duration" title="Duration" note="Same curve, different lengths." interval={interval} tune={tuneProps('duration')}>
+      <RacePanel
+        tone="duration"
+        title="Duration"
+        note="Same curve, different lengths."
+        interval={interval}
+        tune={tuneProps('duration')}
+      >
         {(on) =>
           DURATIONS.map((name) => (
             <RaceRow
@@ -104,7 +110,7 @@ export function TokenReference() {
         }
       </RacePanel>
 
-      <RacePanel tone="spring" title="Spring" note="Physics for things people move directly." interval={interval} tune={tuneProps('spring')}>
+      <RacePanel tone="spring" title="Spring" note="Physics for things people move directly. Bounce rebounds off the end so it stays on the track." interval={interval} tune={tuneProps('spring')}>
         {(on) =>
           SPRINGS.map((name) => {
             const spring = base.spring[name]
@@ -130,7 +136,8 @@ export function TokenReference() {
                       label="Bounce"
                       value={spring.bounce}
                       min={0}
-                      max={0.8}
+                      // Past 0.5 a spring reads as cartoonish; nothing you'd ship in product UI.
+                      max={0.5}
                       step={0.05}
                       format={(v) => v.toFixed(2)}
                       onChange={(bounce) => setToken('spring', name, { ...spring, bounce })}
@@ -138,8 +145,9 @@ export function TokenReference() {
                   </div>,
                 )}
               >
+                {/* Shuttle rebounds off the ends instead of overshooting past them. */}
                 <Track on={on}>
-                  <Move spring={name} className={cn(DOT, TONES.spring)} />
+                  <Shuttle atEnd={on} spring={name} className={cn(DOT, TONES.spring)} />
                 </Track>
               </RaceRow>
             )
@@ -147,7 +155,13 @@ export function TokenReference() {
         }
       </RacePanel>
 
-      <RacePanel tone="stagger" title="Stagger" note="The gap between siblings. Keep the whole run short." interval={interval} tune={tuneProps('stagger')}>
+      <RacePanel
+        tone="stagger"
+        title="Stagger"
+        note="The gap between siblings. Keep the whole run short."
+        interval={interval}
+        tune={tuneProps('stagger')}
+      >
         {(on) =>
           STAGGERS.map((name) => (
             <RaceRow
@@ -211,7 +225,9 @@ function RacePanel({ tone, title, note, interval, tune, children }: RacePanelPro
   return (
     <section
       ref={ref as RefObject<HTMLElement>}
-      className="rounded-[1.25rem] border-2 border-ink bg-surface p-5"
+      // Bouncy springs can carry dots a little past the track ends; the card clips them at its edge
+      // so they never escape onto the page, while dots still rest at the track ends.
+      className="overflow-x-clip rounded-[1.25rem] border-2 border-ink bg-surface p-5"
     >
       <div className="mb-5 flex flex-wrap items-start gap-3">
         <span aria-hidden="true" className={cn('mt-1 size-4 shrink-0 rounded-full border-2 border-ink', TONES[tone])} />

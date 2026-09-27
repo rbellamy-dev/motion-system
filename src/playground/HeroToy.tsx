@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Move, Stagger, StaggerItem, useMotionToken } from '@/motion'
+import { Move, Shuttle, Stagger, StaggerItem, useMotionToken } from '@/motion'
 import { cn } from '@/lib/cn'
 import { keyClasses } from '@/ui/Button'
 import { TONES, type Tone } from './tones'
@@ -55,7 +55,8 @@ export function HeroToy() {
     <div className="rounded-[1.75rem] border-2 border-ink bg-surface p-4 sm:p-5">
       {/* Screen */}
       <div className="rounded-2xl bg-ink p-4 text-paper">
-        <div className="flex h-24 items-center rounded-xl bg-paper/10 px-3">
+        {/* Clipped so overshooting tokens stay inside the screen; the puck still rests at its ends. */}
+        <div className="flex h-24 items-center overflow-hidden rounded-xl bg-paper/10 px-3">
           {active === 'stagger' ? (
             <Stagger key={replay} gap="loose" className="flex w-full justify-between">
               {Array.from({ length: STAGGER_BLOCKS }, (_, i) => (
@@ -66,7 +67,7 @@ export function HeroToy() {
             </Stagger>
           ) : (
             <div className={cn('flex w-full', atEnd ? 'justify-end' : 'justify-start')}>
-              <Puck tone={active} />
+              <Puck tone={active} atEnd={atEnd} />
             </div>
           )}
         </div>
@@ -102,9 +103,9 @@ export function HeroToy() {
 }
 
 /** The puck plays whichever token its key represents. */
-function Puck({ tone }: { tone: Exclude<Tone, 'stagger'> }) {
+function Puck({ tone, atEnd }: { tone: Exclude<Tone, 'stagger'>; atEnd: boolean }) {
   const className = cn('size-12 rounded-full', TONES[tone])
-  if (tone === 'spring') return <Move spring="bouncy" className={className} />
+  if (tone === 'spring') return <Shuttle atEnd={atEnd} spring="bouncy" className={className} />
   if (tone === 'easing') return <Move duration="slow" ease="emphasized" className={className} />
   return <Move duration="base" className={className} />
 }

@@ -13,7 +13,7 @@ npm run build    # type-check + production build
 ```
 1. Tokens        src/tokens/        durations, easings, springs, stagger, distance, scale
         ↓                            (tokens.json is the single source of truth)
-2. Primitives    src/motion/        Reveal · Presence · Stagger · Move · useMotionToken
+2. Primitives    src/motion/        Reveal · Presence · Stagger · Move · Shuttle · useMotionToken
         ↓                            (the only code that imports the `motion` library)
 3. Choreography  src/choreography/  Modal · List · Toast
                                      (built only from primitives, with no timing values of their own)
