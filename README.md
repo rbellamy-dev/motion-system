@@ -27,14 +27,6 @@ The rest of the code:
 
 Every motion value lives in one file: [`src/tokens/tokens.json`](src/tokens/tokens.json). It uses the [W3C Design Tokens (DTCG)](https://www.designtokens.org/) format, so tools like Tokens Studio and Style Dictionary can read it too.
 
-### Changing tokens
-
-| To… | Do this | Code changes? |
-|---|---|---|
-| Change a value | Edit `tokens.json`. The playground updates instantly. | None |
-| Add a token (e.g. a new duration) | Add it to `tokens.json`. It appears in the playground and becomes a type-checked name. | None |
-| Add a new kind of token (e.g. rotation) | Teach a primitive how to use it. | Yes |
-
 ### Exporting tokens
 
 Download the tokens from the playground in three formats:
