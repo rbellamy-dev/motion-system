@@ -52,12 +52,6 @@ export default function App() {
                 A motion system in three layers: tokens hold the numbers, primitives turn them into movement, and
                 every pattern is built only from primitives. Change a token and the whole page follows.
               </p>
-              <p className="mt-6">
-                Designed and built by{' '}
-                <a href={site.portfolioUrl} className={linkClass}>
-                  {site.author}
-                </a>
-              </p>
               <div className="mt-6 flex flex-wrap items-center gap-3">
                 <a
                   href={tokensUrl}
@@ -148,22 +142,13 @@ function Closing() {
             </li>
           ))}
         </ol>
-        <div className="mt-16 flex flex-wrap items-center gap-x-6 gap-y-3">
-          <p>
-            Designed and built by{' '}
-            <a href={site.portfolioUrl} className={linkClass}>
-              {site.author}
-            </a>
-          </p>
-          <a href={tokensUrl} download="tokens.json" className={linkClass}>
-            tokens.json
-          </a>
-          {site.repoUrl && (
+        {site.repoUrl && (
+          <p className="mt-16">
             <a href={site.repoUrl} className={linkClass}>
               Source
             </a>
-          )}
-        </div>
+          </p>
+        )}
       </footer>
     </Reveal>
   )

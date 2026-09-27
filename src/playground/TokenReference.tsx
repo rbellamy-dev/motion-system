@@ -108,17 +108,19 @@ function RacePanel({ tone, title, note, interval, children }: RacePanelProps) {
           <p className="text-muted">{note}</p>
         </div>
       </div>
-      <div className="space-y-3">{children(on)}</div>
+      <div className="space-y-4">{children(on)}</div>
     </section>
   )
 }
 
+/** Name and value share one line above a full-width track, so long values never wrap mid-phrase. */
 function RaceRow({ name, value, children }: { name: string; value: string; children: ReactNode }) {
   return (
-    <div className="grid grid-cols-[6.5rem_minmax(0,1fr)] items-center gap-3">
-      <div className="min-w-0">
+    <div className="space-y-1.5">
+      {/* The value drops under the name only when the row is too narrow for both. */}
+      <div className="flex flex-wrap items-baseline justify-between gap-x-3">
         <p className="font-mono text-sm font-medium">{name}</p>
-        <p className="font-mono text-xs wrap-break-word text-muted tabular-nums">{value}</p>
+        <p className="font-mono text-xs whitespace-nowrap text-muted tabular-nums">{value}</p>
       </div>
       {children}
     </div>
