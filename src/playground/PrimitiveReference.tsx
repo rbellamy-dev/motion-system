@@ -115,7 +115,7 @@ function PrimitiveCard({ name, tone, description, code, action, children }: Prim
       <div className="flex flex-1 flex-col gap-3 p-5">
         <div className="flex items-center gap-2">
           <span aria-hidden="true" className={cn('size-3 rounded-full border-2 border-ink', TONES[tone])} />
-          <h3 className="font-mono font-medium">{name}</h3>
+          <h3 className="text-xl font-extrabold">{name}</h3>
         </div>
         <p className="text-muted">{description}</p>
         <code className="mt-auto block font-mono text-sm wrap-break-word text-ink/80">{code}</code>

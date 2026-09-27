@@ -5,6 +5,7 @@ import {
   ControlPanel,
   DemoCard,
   HeroToy,
+  PageNav,
   PlaybackProvider,
   PrimitiveReference,
   TokenDownload,
@@ -33,6 +34,13 @@ const DEMOS = [
   },
 ]
 
+const JUMP_LINKS = [
+  { id: 'tokens', label: 'Tokens' },
+  { id: 'primitives', label: 'Primitives' },
+  { id: 'patterns', label: 'Patterns' },
+  { id: 'rules', label: 'Rules' },
+]
+
 const RULES = [
   { title: 'Tokens are data.', body: 'Every value lives in tokens.json. Code only reads it, so tuning motion never means editing components.' },
   { title: 'Only primitives touch the library.', body: 'One folder imports the animation library. Everything else asks a primitive, so the library could be swapped in one place.' },
@@ -49,7 +57,8 @@ export default function App() {
   return (
     <MotionConfigProvider>
       <PlaybackProvider>
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <PageNav title="How things move" links={JUMP_LINKS} />
+        <div id="top" className="mx-auto max-w-6xl scroll-mt-20 px-4 sm:px-6">
           <header className="grid items-center gap-10 pt-10 pb-20 lg:grid-cols-[1.1fr_1fr] lg:gap-14 lg:pt-20 lg:pb-28">
             <Reveal>
               <h1 className="font-display text-display font-black">How things move.</h1>
@@ -74,12 +83,13 @@ export default function App() {
           <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-14">
             {/* First in the DOM so tab order matches the mobile layout; sits on the right on large screens. */}
             <div className="lg:order-last">
-              <div className="lg:sticky lg:top-6">
+              {/* Sits below the fixed nav bar while scrolling. */}
+              <div className="lg:sticky lg:top-20">
                 <ControlPanel />
               </div>
             </div>
 
-            <main className="min-w-0 space-y-24">
+            <main className="min-w-0 space-y-20">
               <Section title="Tokens" lede="The raw material. Tokens in the same family race side by side, so you feel the difference instead of reading it. Tokens build on each other, so tuning one can change others.">
                 <TokenReference />
               </Section>
@@ -112,7 +122,7 @@ export default function App() {
 function Section({ title, lede, children }: { title: string; lede: string; children: ReactNode }) {
   return (
     <Reveal inView>
-      <section>
+      <section id={title.toLowerCase()} className="scroll-mt-20">
         <div className="mb-8">
           <h2 className="font-display text-title font-extrabold">{title}</h2>
           <p className="mt-3 max-w-[60ch] text-lg text-muted">{lede}</p>
@@ -126,7 +136,7 @@ function Section({ title, lede, children }: { title: string; lede: string; child
 function Closing() {
   return (
     <Reveal inView>
-      <footer className="mt-32 border-t-2 border-ink pt-16 pb-20">
+      <footer id="rules" className="mt-32 scroll-mt-20 border-t-2 border-ink pt-16 pb-20">
         <h2 className="font-display text-title font-extrabold">Rules it keeps.</h2>
         <ol className="mt-10 grid gap-x-12 gap-y-8 md:grid-cols-2 lg:grid-cols-3">
           {RULES.map((rule) => (

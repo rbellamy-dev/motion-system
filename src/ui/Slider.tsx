@@ -1,4 +1,4 @@
-import { useId } from 'react'
+import { useId, type CSSProperties } from 'react'
 
 interface SliderProps {
   label: string
@@ -26,7 +26,9 @@ export function Slider({ label, value, min, max, step, onChange, format = String
       onChange={(e) => onChange(Number(e.target.value))}
       aria-label={hideLabel ? label : undefined}
       aria-valuetext={format(value)}
-      className="w-full accent-accent focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-easing"
+      // --fill drives the orange filled part of the track (styled in styles/index.css, .range).
+      style={{ '--fill': `${((value - min) / (max - min)) * 100}%` } as CSSProperties}
+      className="range w-full focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-easing"
     />
   )
 

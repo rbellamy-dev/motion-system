@@ -1,6 +1,7 @@
 export { ControlPanel } from './ControlPanel'
 export { DemoCard } from './DemoCard'
 export { HeroToy } from './HeroToy'
+export { PageNav, type NavLink } from './PageNav'
 export { PlaybackProvider, usePlayback } from './playback'
 export { PrimitiveReference } from './PrimitiveReference'
 export { TokenDownload } from './TokenDownload'

@@ -41,7 +41,7 @@ export function TokenReference() {
   const control = (group: TokenGroup, node: ReactNode) => (tuning === group ? node : undefined)
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       <RacePanel
         tone="duration"
         title="Duration"
@@ -185,10 +185,10 @@ export function TokenReference() {
               )}
             >
               {/* Changing the key remounts the list, replaying the stagger each loop. */}
-              <Stagger key={String(on)} gap={name} className="flex h-10 items-center gap-1.5 sm:gap-2">
+              <Stagger key={String(on)} gap={name} className="flex h-8 items-center gap-1.5 sm:gap-2">
                 {Array.from({ length: STAGGER_DOTS }, (_, i) => (
                   <StaggerItem key={i} distance="md">
-                    <div className={cn('size-5 rounded-md border-2 border-ink sm:size-6', TONES.stagger)} />
+                    <div className={cn('size-4 rounded-md border-2 border-ink sm:size-5', TONES.stagger)} />
                   </StaggerItem>
                 ))}
               </Stagger>
@@ -200,7 +200,7 @@ export function TokenReference() {
   )
 }
 
-const DOT = 'size-6 rounded-full border-2 border-ink'
+const DOT = 'size-5 rounded-full border-2 border-ink'
 
 interface TuneProps {
   open: boolean
@@ -230,7 +230,7 @@ function RacePanel({ tone, title, note, interval, tune, children }: RacePanelPro
       // so they never escape onto the page, while dots still rest at the track ends.
       className="overflow-x-clip rounded-[1.25rem] border-2 border-ink bg-surface p-5"
     >
-      <div className="mb-5 flex flex-wrap items-start gap-3">
+      <div className="mb-4 flex flex-wrap items-start gap-3">
         <span aria-hidden="true" className={cn('mt-1 size-4 shrink-0 rounded-full border-2 border-ink', TONES[tone])} />
         <div className="min-w-0 flex-1">
           <h3 className="text-xl font-extrabold">{title}</h3>
@@ -253,7 +253,7 @@ function RacePanel({ tone, title, note, interval, tune, children }: RacePanelPro
         )}
       </div>
 
-      <div className="space-y-4">{children(on)}</div>
+      <div className="space-y-2.5">{children(on)}</div>
     </section>
   )
 }
@@ -279,7 +279,7 @@ function RaceRow({
   children: ReactNode
 }) {
   const race = (
-    <div className="min-w-0 space-y-1.5">
+    <div className="min-w-0 space-y-1">
       {/* The value drops under the name only when the row is too narrow for both. */}
       <div className="flex flex-wrap items-baseline justify-between gap-x-3">
         <p className="flex items-center gap-1.5 font-mono text-sm font-medium">
@@ -311,7 +311,7 @@ function RaceRow({
   }
 
   return (
-    <div className="grid items-end gap-x-10 gap-y-3 lg:grid-cols-2">
+    <div className="grid items-end gap-x-8 gap-y-3 lg:grid-cols-[3fr_2fr]">
       {race}
       <Presence show variant="fade" className="pb-2">
         {control}
@@ -323,7 +323,7 @@ function RaceRow({
 /** A rail the dot travels along. `on` flips it between the two ends. */
 function Track({ on, children }: { on: boolean; children: ReactNode }) {
   return (
-    <div className={cn('flex h-10 items-center rounded-full bg-paper px-2', on ? 'justify-end' : 'justify-start')}>
+    <div className={cn('flex h-8 items-center rounded-full bg-paper px-1.5', on ? 'justify-end' : 'justify-start')}>
       {children}
     </div>
   )
