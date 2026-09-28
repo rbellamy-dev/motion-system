@@ -21,7 +21,7 @@ export function ControlPanel() {
         <h2 id="controls-title" className="text-xl font-extrabold">
           Controls
         </h2>
-        <p className="text-muted">Playback for the whole page. Tune individual tokens on their panels.</p>
+        <p className="text-muted">Playback for the whole page. Edit individual tokens on their panels.</p>
       </div>
 
       <Slider
@@ -55,7 +55,7 @@ export function ControlPanel() {
           label="Show export options"
           description={
             changes > 0
-              ? `${changes} ${changes === 1 ? 'token' : 'tokens'} tuned. Time scale is never exported.`
+              ? `${changes} ${changes === 1 ? 'token' : 'tokens'} edited. Time scale is never exported.`
               : 'Download the tokens as JSON, TypeScript or CSS.'
           }
           checked={showExport}

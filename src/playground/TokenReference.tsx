@@ -21,7 +21,7 @@ const ms = (v: number) => `${Math.round(v)}ms`
 /**
  * One panel per token family. Every token in a family races on the same width of track,
  * started at the same moment, so the difference is visible side by side.
- * Panels stack full width, so "Tune" can put each token's control on the same row as its race
+ * Panels stack full width, so "Edit" can put each token's control on the same row as its race
  * without anything reflowing.
  */
 export function TokenReference() {
@@ -236,7 +236,7 @@ function RacePanel({ tone, title, note, interval, tune, children }: RacePanelPro
     >
       <div className="mb-4 flex flex-wrap items-start gap-3">
         <span aria-hidden="true" className={cn('mt-1 size-4 shrink-0 rounded-full border-2 border-ink', TONES[tone])} />
-        {/* basis keeps room for the heading; with large text the Tune button wraps below instead. */}
+        {/* basis keeps room for the heading; with large text the Edit button wraps below instead. */}
         <div className="min-w-0 flex-1 basis-40">
           <h3 className="text-xl font-extrabold">{title}</h3>
           <p className="text-muted">{note}</p>
@@ -252,7 +252,7 @@ function RacePanel({ tone, title, note, interval, tune, children }: RacePanelPro
               </>
             )}
             <Button size="sm" variant={tune.open ? 'primary' : 'secondary'} aria-expanded={tune.open} onClick={tune.onToggle}>
-              {tune.open ? 'Done' : 'Tune'}
+              {tune.open ? 'Done' : 'Edit'}
             </Button>
           </div>
         )}

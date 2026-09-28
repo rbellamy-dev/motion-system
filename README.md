@@ -38,7 +38,7 @@ Download the tokens from the playground in three formats:
 | **CSS** | Custom properties on `:root` |
 
 - **They never drift apart.** TypeScript and CSS are generated from the JSON when you click download (`src/tokens/exporters.ts`).
-- **Tuned or original.** After tuning in the playground (the **Tune** button on each panel), choose whether to export your tuned values or the original file. Tuned JSON keeps every `$type` and `$description`; only the values change.
+- **Edited or original.** After editing in the playground (the **Edit** button on each panel), choose whether to export your edited values or the original file. Edited JSON keeps every `$type` and `$description`; only the values change.
 - **Time scale is never exported.** It's playback speed for previewing, not a token.
 - **Springs in CSS:** CSS has no spring timing, so springs export as a duration and a bounce for JavaScript to read.
 

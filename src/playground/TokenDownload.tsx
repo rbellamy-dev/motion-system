@@ -48,7 +48,7 @@ export function TokenDownload({ stacked = false }: TokenDownloadProps) {
           label="Which values to export"
           value={source}
           options={[
-            { value: 'tuned', label: `Tuned (${changes})` },
+            { value: 'tuned', label: `Edited (${changes})` },
             { value: 'original', label: 'Original' },
           ]}
           onChange={setSource}
