@@ -35,7 +35,7 @@ export function ListDemo() {
         <Stagger key={replayKey} gap="loose" className="h-full overflow-y-auto">
           {items.map((item) => (
             <StaggerItem key={item.id}>
-              <div className="flex items-center justify-between border-b-2 border-ink/10 py-1 pr-1 pl-1">
+              <div className="flex items-center justify-between border-b border-line py-1 pr-1 pl-1">
                 <span>{item.label}</span>
                 <Button size="sm" variant="ghost" onClick={() => remove(item.id)} aria-label={`Remove ${item.label}`}>
                   ✕

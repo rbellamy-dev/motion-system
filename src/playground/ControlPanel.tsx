@@ -16,9 +16,9 @@ export function ControlPanel() {
   const [showExport, setShowExport] = useState(false)
 
   return (
-    <aside aria-labelledby="controls-title" className="space-y-6 rounded-[1.25rem] border-2 border-ink bg-surface p-5">
+    <aside aria-labelledby="controls-title" className="space-y-6 rounded-lg border border-line bg-surface p-5">
       <div>
-        <h2 id="controls-title" className="text-xl font-extrabold">
+        <h2 id="controls-title" className="text-xl font-medium">
           Controls
         </h2>
         <p className="text-muted">Playback for the whole page. Edit individual tokens on their panels.</p>
@@ -34,7 +34,7 @@ export function ControlPanel() {
         onChange={(timeScale) => updateSettings({ timeScale })}
       />
 
-      <div className="space-y-5 border-t-2 border-ink/10 pt-5">
+      <div className="space-y-5 border-t border-line pt-5">
         <Toggle
           label="Reduce motion"
           description={osReducedMotion ? 'On in your system settings.' : 'Movement becomes a short fade.'}
@@ -50,7 +50,7 @@ export function ControlPanel() {
         />
       </div>
 
-      <div className="space-y-4 border-t-2 border-ink/10 pt-5">
+      <div className="space-y-4 border-t border-line pt-5">
         <Toggle
           label="Show export options"
           description={

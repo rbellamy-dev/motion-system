@@ -50,7 +50,7 @@ export function ModalDemo() {
         The dialog opens over this stage.
       </p>
 
-      <Presence show={open} variant="fade" className="absolute inset-0 bg-ink/40">
+      <Presence show={open} variant="fade" className="absolute inset-0 bg-screen/70">
         <div className="size-full" onClick={close} aria-hidden="true" />
       </Presence>
 
@@ -62,9 +62,9 @@ export function ModalDemo() {
             aria-modal="true"
             aria-labelledby={titleId}
             onKeyDown={trapFocus}
-            className="rounded-[1.25rem] border-2 border-ink bg-surface p-5"
+            className="rounded-lg border border-line bg-surface p-5"
           >
-            <h3 id={titleId} className="text-lg font-extrabold">
+            <h3 id={titleId} className="text-lg font-medium">
               Publish changes?
             </h3>
             <p className="mt-1 text-muted">Your motion tokens will update across every product.</p>

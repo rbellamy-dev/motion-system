@@ -15,7 +15,7 @@ export function SegmentedControl<T extends string>({ label, value, options, onCh
   const name = useId()
 
   return (
-    <fieldset className={cn('flex rounded-xl border-2 border-ink bg-surface p-1', className)}>
+    <fieldset className={cn('flex rounded-xl border border-line bg-surface p-1', className)}>
       <legend className="sr-only">{label}</legend>
       {options.map((option) => (
         <label key={option.value} className="relative flex-1">
@@ -29,7 +29,7 @@ export function SegmentedControl<T extends string>({ label, value, options, onCh
           />
           <span
             className={cn(
-              'block cursor-pointer rounded-lg px-3 py-1.5 text-center font-bold whitespace-nowrap coarse:py-2.5',
+              'block cursor-pointer rounded-lg px-3 py-1.5 text-center font-medium whitespace-nowrap coarse:py-2.5',
               'transition-colors duration-(--duration-instant) ease-standard',
               'peer-focus-visible:outline-3 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-easing',
               value === option.value ? 'bg-ink text-paper' : 'text-muted hover:text-ink',

@@ -37,7 +37,7 @@ export function Slider({ label, value, min, max, step, onChange, format = String
   return (
     <div className="space-y-2">
       <div className="flex items-baseline justify-between">
-        <label htmlFor={id} className="font-bold">
+        <label htmlFor={id} className="font-medium">
           {label}
         </label>
         <output htmlFor={id} className="font-mono text-sm text-muted tabular-nums">

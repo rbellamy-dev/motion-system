@@ -67,7 +67,7 @@ function StaggerExample() {
       <Stagger key={replayKey} gap="loose" className="w-40 space-y-2">
         {STAGGER_ROWS.map((width) => (
           <StaggerItem key={width}>
-            <div className={cn('h-3.5 rounded-full border-2 border-ink', TONES.stagger, width)} />
+            <div className={cn('h-3.5 rounded-full border border-line', TONES.stagger, width)} />
           </StaggerItem>
         ))}
       </Stagger>
@@ -87,7 +87,7 @@ function MoveExample() {
       action={<ActionButton onClick={() => setAtEnd((v) => !v)}>Move</ActionButton>}
     >
       <div className={cn('flex w-full', atEnd ? 'justify-end' : 'justify-start')}>
-        <Move spring="bouncy" className={cn('size-9 rounded-full border-2 border-ink', TONES.spring)} />
+        <Move spring="bouncy" className={cn('size-9 rounded-full border border-line', TONES.spring)} />
       </div>
     </PrimitiveCard>
   )
@@ -107,15 +107,15 @@ interface PrimitiveCardProps {
 /** Stage on top (controls top-left, like the pattern demos), explanation and usage below. */
 function PrimitiveCard({ name, tone, description, code, action, children }: PrimitiveCardProps) {
   return (
-    <article className="flex flex-col overflow-hidden rounded-[1.25rem] border-2 border-ink bg-surface">
-      <div className="relative grid h-44 place-items-center border-b-2 border-ink bg-paper px-8">
+    <article className="flex flex-col overflow-hidden rounded-lg border border-line bg-surface">
+      <div className="relative grid h-44 place-items-center border-b border-line bg-paper px-8">
         <div className="absolute top-3 left-3">{action}</div>
         {children}
       </div>
       <div className="flex flex-1 flex-col gap-3 p-5">
         <div className="flex items-center gap-2">
-          <span aria-hidden="true" className={cn('size-3 rounded-full border-2 border-ink', TONES[tone])} />
-          <h3 className="text-xl font-extrabold">{name}</h3>
+          <span aria-hidden="true" className={cn('size-3 rounded-full border border-line', TONES[tone])} />
+          <h3 className="text-xl font-medium">{name}</h3>
         </div>
         <p className="text-muted">{description}</p>
         <code className="mt-auto block font-mono text-sm wrap-break-word text-ink/80">{code}</code>
@@ -133,5 +133,5 @@ function ActionButton({ onClick, children }: { onClick: () => void; children: Re
 }
 
 function Block({ tone }: { tone: Tone }) {
-  return <div className={cn('h-14 w-32 rounded-xl border-2 border-ink', TONES[tone])} />
+  return <div className={cn('h-14 w-32 rounded-xl border border-line', TONES[tone])} />
 }

@@ -10,11 +10,10 @@ interface ButtonProps extends ComponentProps<'button'> {
 }
 
 /**
- * Toy-key buttons: an ink outline with a hard "key depth" shadow that the button presses into.
- * The press travel sits behind `full-motion:`, so reduced motion keeps the colour change only.
+ * Flat instrument keys: a hairline outline and a 1px press. The press travel sits behind
+ * `full-motion:`, so reduced motion keeps the colour change only.
  */
-export const keyClasses =
-  'border-2 border-ink shadow-[0_3px_0_var(--color-ink)] full-motion:active:translate-y-[3px] active:shadow-none'
+export const keyClasses = 'border border-line full-motion:active:translate-y-px'
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary: cn('bg-accent text-ink hover:brightness-105', keyClasses),
@@ -32,7 +31,7 @@ export function Button({ variant = 'primary', size = 'md', className, type = 'bu
     <button
       type={type}
       className={cn(
-        'inline-flex items-center justify-center gap-2 rounded-xl font-bold',
+        'inline-flex items-center justify-center gap-2 rounded-xl font-medium',
         'transition duration-(--duration-instant) ease-standard',
         'focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-easing',
         'disabled:pointer-events-none disabled:opacity-40',

@@ -44,7 +44,7 @@ export function ToastDemo() {
       {toasts.length === 0 && (
         <p
           aria-hidden="true"
-          className="absolute inset-x-4 bottom-4 grid h-24 place-items-center rounded-xl border-2 border-dashed border-ink/25 text-sm text-muted"
+          className="absolute inset-x-4 bottom-4 grid h-24 place-items-center rounded-xl border border-dashed border-line text-sm text-muted"
         >
           Toasts stack here.
         </p>
@@ -55,7 +55,7 @@ export function ToastDemo() {
         <Stagger className="flex flex-col gap-2">
           {toasts.map((toast) => (
             <StaggerItem key={toast.id} spring="gentle">
-              <div className="flex items-center justify-between rounded-xl border-2 border-ink bg-ink px-4 py-3 text-paper">
+              <div className="flex items-center justify-between rounded-xl border border-line bg-ink px-4 py-3 text-paper">
                 <span>{toast.message}</span>
                 <button
                   type="button"

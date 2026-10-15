@@ -12,32 +12,44 @@
 @custom-variant coarse (@media (pointer: coarse));
 
 @theme {
-  /* One committed family: chunky at 800-900 for display, plain at 400 for reading. Mono is for code only. */
-  --font-sans: "Gabarito", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Gabarito", ui-sans-serif, system-ui, sans-serif;
+  /* One family, Space Grotesk: medium (500) for display, regular (400) for reading. Mono is for code only. */
+  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
   /* Fluid display scale for headings; body text stays fixed. */
-  --text-display: clamp(3.25rem, 1.9rem + 6vw, 7rem);
-  --text-display--line-height: 0.92;
+  --text-display: clamp(3rem, 1.8rem + 4.6vw, 5.75rem);
+  --text-display--line-height: 0.95;
   --text-display--letter-spacing: -0.04em;
   --text-title: clamp(2.25rem, 1.6rem + 2.6vw, 3.5rem);
   --text-title--line-height: 1;
   --text-title--letter-spacing: -0.025em;
 
-  /* Warm "plastic" neutrals, tinted toward the orange hue. Never pure black or white. */
-  --color-paper: oklch(95.5% 0.012 80);
-  --color-surface: oklch(99% 0.004 80);
-  --color-ink: oklch(23% 0.02 55);
-  --color-muted: oklch(46% 0.02 60);
-  --color-line: oklch(86% 0.015 75);
-  --color-accent: oklch(69% 0.18 45);
+  /* Tight corners for an instrument panel: panels 6px, controls 4px. */
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-xl: 6px;
+  --radius-2xl: 6px;
+
+  /*
+   * Graphite: three steps of cool gray, from screen (darkest) to paper (page) to surface (panels).
+   * Ink is light; lines are dim hairlines. Never pure black or white.
+   */
+  --color-screen: oklch(21% 0.008 250);
+  --color-paper: oklch(29% 0.008 250);
+  --color-surface: oklch(34% 0.008 250);
+  --color-ink: oklch(96% 0.004 250);
+  --color-muted: oklch(82% 0.008 250);
+  --color-line: oklch(44% 0.008 250);
+  /* Dark enough that light ink on it clears AA (6.3:1); it fills primary buttons, toggles and slider tracks. */
+  --color-accent: oklch(45% 0.1 160);
 
   /* Each token family has its own colour, used consistently from hero to demos. Colour means "which kind of token". */
-  --color-duration: oklch(69% 0.18 45);
-  --color-easing: oklch(62% 0.15 250);
-  --color-spring: oklch(85% 0.15 92);
-  --color-stagger: oklch(70% 0.14 155);
+  --color-duration: oklch(78% 0.14 55);
+  --color-easing: oklch(77% 0.11 240);
+  --color-spring: oklch(86% 0.13 95);
+  --color-stagger: oklch(78% 0.13 160);
 
   /*
    * Motion bridge. These are fallbacks only: MotionConfigProvider writes the real values from
@@ -68,9 +80,25 @@ body {
   font-kerning: normal;
 }
 
+/* Every clickable control shows the pointer; a disabled one says it can't be used. */
+button:not(:disabled),
+[role="switch"]:not(:disabled) {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: not-allowed;
+}
+
+/* The faint grid behind anything that plays motion (the hero screen), like a scope display. */
+.screen-grid {
+  background-image:
+    linear-gradient(oklch(100% 0 0 / 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(100% 0 0 / 0.06) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
 /*
- * Range sliders in the toy style: a light track, an orange filled part up to the thumb,
- * and a white thumb with an ink outline (like the curve editor's handles).
+ * Range sliders: a dim track, an accent fill up to the thumb, and a light thumb.
  * The Slider component sets --fill to the thumb's position as a percentage.
  */
 .range {
@@ -99,16 +127,16 @@ body {
   width: 1.125rem;
   height: 1.125rem;
   margin-top: -0.375rem;
-  border: 2px solid var(--color-ink);
+  border: none;
   border-radius: 999px;
-  background: var(--color-surface);
+  background: var(--color-ink);
 }
 .range::-moz-range-thumb {
   width: 1rem;
   height: 1rem;
-  border: 2px solid var(--color-ink);
+  border: none;
   border-radius: 999px;
-  background: var(--color-surface);
+  background: var(--color-ink);
 }
 
 /* On touch screens the slider's hit area grows to 44px tall; the visible track stays the same. */

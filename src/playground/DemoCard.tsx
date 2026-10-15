@@ -13,10 +13,10 @@ interface DemoCardProps {
 /** Stage on top (the demo's own controls sit top-left), the rule it demonstrates below. */
 export function DemoCard({ title, rule, children, stageClassName = 'h-80' }: DemoCardProps) {
   return (
-    <article className="flex flex-col overflow-hidden rounded-[1.25rem] border-2 border-ink bg-surface">
-      <div className={cn('border-b-2 border-ink bg-paper', stageClassName)}>{children}</div>
+    <article className="flex flex-col overflow-hidden rounded-lg border border-line bg-surface">
+      <div className={cn('border-b border-line bg-paper', stageClassName)}>{children}</div>
       <div className="p-5">
-        <h3 className="text-xl font-extrabold">{title}</h3>
+        <h3 className="text-xl font-medium">{title}</h3>
         <p className="mt-1 text-muted">{rule}</p>
       </div>
     </article>

@@ -51,7 +51,7 @@ const RULES = [
 ]
 
 const linkClass =
-  'font-bold underline decoration-2 underline-offset-4 decoration-accent hover:decoration-ink focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-easing rounded-sm'
+  'font-medium underline decoration-2 underline-offset-4 decoration-accent hover:decoration-ink focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-easing rounded-sm'
 
 export default function App() {
   return (
@@ -65,7 +65,7 @@ export default function App() {
           */}
           <header className="grid gap-x-14 gap-y-8 pt-10 pb-20 lg:grid-cols-[1.1fr_1fr] lg:pt-20 lg:pb-28">
             <Reveal className="lg:self-end">
-              <h1 id="page-title" className="font-display text-display font-black">
+              <h1 id="page-title" className="font-display text-display font-medium">
                 How things move.
               </h1>
               <p className="mt-6 max-w-[48ch] text-lg text-muted">
@@ -139,7 +139,7 @@ function Section({ title, lede, children, reveal = true }: SectionProps) {
   const section = (
     <section id={title.toLowerCase()} className="scroll-mt-20">
       <div className="mb-8">
-        <h2 className="font-display text-title font-extrabold">{title}</h2>
+        <h2 className="font-display text-title font-medium">{title}</h2>
         <p className="mt-3 max-w-[60ch] text-lg text-muted">{lede}</p>
       </div>
       {children}
@@ -151,12 +151,12 @@ function Section({ title, lede, children, reveal = true }: SectionProps) {
 function Closing() {
   return (
     <Reveal inView>
-      <footer id="rules" className="mt-32 scroll-mt-20 border-t-2 border-ink pt-16 pb-20">
-        <h2 className="font-display text-title font-extrabold">Rules it keeps.</h2>
+      <footer id="rules" className="mt-32 scroll-mt-20 border-t border-line pt-16 pb-20">
+        <h2 className="font-display text-title font-medium">Rules it keeps.</h2>
         <ol className="mt-10 grid gap-x-12 gap-y-8 md:grid-cols-2 lg:grid-cols-3">
           {RULES.map((rule) => (
             <li key={rule.title}>
-              <p className="text-lg font-extrabold">{rule.title}</p>
+              <p className="text-lg font-medium">{rule.title}</p>
               <p className="mt-1 max-w-[42ch] text-muted">{rule.body}</p>
             </li>
           ))}

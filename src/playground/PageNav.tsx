@@ -59,12 +59,12 @@ export function PageNav({ title, links, titleTargetId }: PageNavProps) {
   }, [links])
 
   return (
-    <nav aria-label="On this page" className="sticky top-0 z-40 border-b-2 border-ink bg-paper">
+    <nav aria-label="On this page" className="sticky top-0 z-40 border-b border-line bg-paper">
       <div className="mx-auto flex min-h-14 max-w-6xl items-center justify-between gap-6 px-4 sm:px-6">
         {/* Always takes its space, so the links don't shift when the title appears. */}
         <div className="hidden min-w-0 sm:block">
           <Presence show={showTitle} variant="fade">
-            <a href="#top" className="font-display text-lg font-black">
+            <a href="#top" className="font-display text-lg font-medium">
               {title}
             </a>
           </Presence>
@@ -79,7 +79,7 @@ export function PageNav({ title, links, titleTargetId }: PageNavProps) {
                 aria-current={current === id ? 'true' : undefined}
                 className={cn(
                   // min-h-11: 44px touch targets on phones.
-                  'flex min-h-11 items-center rounded-sm font-bold whitespace-nowrap underline-offset-8',
+                  'flex min-h-11 items-center rounded-sm font-medium whitespace-nowrap underline-offset-8',
                   'transition-colors duration-(--duration-quick) ease-standard',
                   'focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-easing',
                   current === id ? 'text-ink underline decoration-accent decoration-3' : 'text-muted hover:text-ink',

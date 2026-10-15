@@ -192,7 +192,7 @@ export function TokenReference() {
                 {Array.from({ length: STAGGER_DOTS }, (_, i) => (
                   // Each square gets an equal share of the rail (capped), so ten always fit, even with enlarged text.
                   <StaggerItem key={i} distance="md" className="flex min-w-0 flex-1 justify-center">
-                    <div className={cn('aspect-square w-full max-w-4 rounded-md border-2 border-ink sm:max-w-5', TONES.stagger)} />
+                    <div className={cn('aspect-square w-full max-w-4 rounded-md border border-line sm:max-w-5', TONES.stagger)} />
                   </StaggerItem>
                 ))}
               </Stagger>
@@ -204,7 +204,7 @@ export function TokenReference() {
   )
 }
 
-const DOT = 'size-5 rounded-full border-2 border-ink'
+const DOT = 'size-5 rounded-full border border-line'
 
 interface TuneProps {
   open: boolean
@@ -232,13 +232,13 @@ function RacePanel({ tone, title, note, interval, tune, children }: RacePanelPro
       ref={ref as RefObject<HTMLElement>}
       // Bouncy springs can carry dots a little past the track ends; the card clips them at its edge
       // so they never escape onto the page, while dots still rest at the track ends.
-      className="overflow-x-clip rounded-[1.25rem] border-2 border-ink bg-surface p-5"
+      className="overflow-x-clip rounded-lg border border-line bg-surface p-5"
     >
       <div className="mb-4 flex flex-wrap items-start gap-3">
-        <span aria-hidden="true" className={cn('mt-1 size-4 shrink-0 rounded-full border-2 border-ink', TONES[tone])} />
+        <span aria-hidden="true" className={cn('mt-1 size-4 shrink-0 rounded-full border border-line', TONES[tone])} />
         {/* basis keeps room for the heading; with large text the Edit button wraps below instead. */}
         <div className="min-w-0 flex-1 basis-40">
-          <h3 className="text-xl font-extrabold">{title}</h3>
+          <h3 className="text-xl font-medium">{title}</h3>
           <p className="text-muted">{note}</p>
         </div>
         {tune && (

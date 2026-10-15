@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Move, Shuttle, Stagger, StaggerItem, useMotionToken } from '@/motion'
 import { cn } from '@/lib/cn'
 import { keyClasses } from '@/ui/Button'
-import { TONES, type Tone } from './tones'
+import { TONE_BARS, TONES, type Tone } from './tones'
 
 interface ToyKey {
   tone: Tone
@@ -52,11 +52,11 @@ export function HeroToy() {
   const key = KEYS.find((k) => k.tone === active) ?? KEYS[0]
 
   return (
-    <div className="rounded-[1.75rem] border-2 border-ink bg-surface p-4 sm:p-5">
-      {/* Screen */}
-      <div className="rounded-2xl bg-ink p-4 text-paper">
+    <div className="rounded-lg border border-line bg-surface p-4 sm:p-5">
+      {/* Screen: the darkest step of the palette, with a scope grid behind the puck */}
+      <div className="rounded-2xl bg-screen p-4 text-ink">
         {/* Clipped so overshooting tokens stay inside the screen; the puck still rests at its ends. */}
-        <div className="flex h-24 items-center overflow-hidden rounded-xl bg-paper/10 px-3">
+        <div className="screen-grid flex h-24 items-center overflow-hidden rounded-xl bg-ink/3 px-3">
           {active === 'stagger' ? (
             <Stagger key={replay} gap="loose" className="flex w-full justify-between">
               {Array.from({ length: STAGGER_BLOCKS }, (_, i) => (
@@ -73,7 +73,7 @@ export function HeroToy() {
         </div>
         <p className="mt-3 flex flex-wrap justify-between gap-x-4 font-mono text-sm" aria-live="polite">
           <span>{key.token}</span>
-          <span className="text-paper/70 tabular-nums">{readout[active]}</span>
+          <span className="text-muted tabular-nums">{readout[active]}</span>
         </p>
       </div>
 
@@ -86,14 +86,15 @@ export function HeroToy() {
             onClick={() => play(tone)}
             aria-label={`Play ${label.toLowerCase()}`}
             className={cn(
-              'flex min-h-16 flex-col items-start justify-between gap-1 rounded-xl p-2.5 text-left font-extrabold',
+              'flex min-h-16 flex-col items-start justify-between gap-1 rounded-xl p-2.5 text-left font-medium',
               'transition duration-(--duration-instant) ease-standard',
               'focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-easing',
-              TONES[tone],
+              'bg-surface text-ink hover:bg-paper',
+              TONE_BARS[tone],
               keyClasses,
             )}
           >
-            <span aria-hidden="true" className={cn('size-2.5 rounded-full bg-ink', active !== tone && 'opacity-30')} />
+            <span aria-hidden="true" className={cn('size-2.5 rounded-full', TONES[tone], active !== tone && 'opacity-30')} />
             {label}
           </button>
         ))}

@@ -16,7 +16,7 @@ export function Toggle({ label, checked, onChange, description, disabled }: Togg
   return (
     <div className="flex items-start justify-between gap-4">
       <div>
-        <p id={labelId} className="font-bold">
+        <p id={labelId} className="font-medium">
           {label}
         </p>
         {description && (
@@ -34,7 +34,8 @@ export function Toggle({ label, checked, onChange, description, disabled }: Togg
         disabled={disabled}
         onClick={() => onChange(!checked)}
         className={cn(
-          'relative h-7 w-12 shrink-0 rounded-full border-2 border-ink',
+          // Flex-centred with 3px padding, so the knob stays centred whatever the border width.
+          'relative flex h-7 w-12 shrink-0 items-center rounded-full border border-line p-[3px]',
           // An invisible 8px margin around the switch makes its tap area 44px tall.
           "before:absolute before:-inset-2 before:content-['']",
           'transition-colors duration-(--duration-quick) ease-standard',
@@ -45,7 +46,7 @@ export function Toggle({ label, checked, onChange, description, disabled }: Togg
       >
         <span
           className={cn(
-            'absolute top-0.5 left-0.5 size-5 rounded-full border-2 border-ink bg-surface',
+            'size-5 rounded-full bg-ink',
             'full-motion:transition-transform full-motion:duration-(--duration-quick) full-motion:ease-standard',
             checked && 'translate-x-5',
           )}
