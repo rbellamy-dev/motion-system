@@ -7,11 +7,13 @@ interface SegmentedControlProps<T extends string> {
   value: T
   options: readonly { value: T; label: string }[]
   onChange: (value: T) => void
+  /** Smaller text so the options keep their padding in narrow spots like the sidebar. */
+  dense?: boolean
   className?: string
 }
 
 /** A row of mutually exclusive options. Native radios underneath, so arrow keys and screen readers just work. */
-export function SegmentedControl<T extends string>({ label, value, options, onChange, className }: SegmentedControlProps<T>) {
+export function SegmentedControl<T extends string>({ label, value, options, onChange, dense = false, className }: SegmentedControlProps<T>) {
   const name = useId()
 
   return (
@@ -29,7 +31,8 @@ export function SegmentedControl<T extends string>({ label, value, options, onCh
           />
           <span
             className={cn(
-              'block cursor-pointer rounded-lg px-3 py-1.5 text-center font-medium whitespace-nowrap coarse:py-2.5',
+              'block cursor-pointer rounded-lg py-1.5 text-center font-medium whitespace-nowrap coarse:py-2.5',
+              dense ? 'px-2.5 text-sm' : 'px-3',
               'transition-colors duration-(--duration-instant) ease-standard',
               'peer-focus-visible:outline-3 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-easing',
               value === option.value ? 'bg-ink text-paper' : 'text-muted hover:text-ink',

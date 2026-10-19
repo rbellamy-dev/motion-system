@@ -1,19 +1,15 @@
-import { useState } from 'react'
-import { Presence, useMotionContext } from '@/motion'
-import { countChangedTokens } from '@/tokens'
+import { useMotionContext } from '@/motion'
 import { Button, Slider, Toggle } from '@/ui'
 import { usePlayback } from './playback'
 import { TokenDownload } from './TokenDownload'
 
 /**
  * Page-wide playback and accessibility. Individual tokens are tuned on their panels.
- * Export options are one toggle away, so the panel stays light until you want them.
+ * Export sits at the bottom as one compact row, always there, so the panel never grows taller.
  */
 export function ControlPanel() {
   const { settings, updateSettings, resetSettings, osReducedMotion } = useMotionContext()
   const { paused, setPaused } = usePlayback()
-  const changes = countChangedTokens(settings.tokens)
-  const [showExport, setShowExport] = useState(false)
 
   return (
     <aside aria-labelledby="controls-title" className="space-y-6 rounded-lg border border-line bg-surface p-5">
@@ -50,20 +46,8 @@ export function ControlPanel() {
         />
       </div>
 
-      <div className="space-y-4 border-t border-line pt-5">
-        <Toggle
-          label="Show export options"
-          description={
-            changes > 0
-              ? `${changes} ${changes === 1 ? 'token' : 'tokens'} edited. Time scale is never exported.`
-              : 'Download the tokens as JSON, TypeScript or CSS.'
-          }
-          checked={showExport}
-          onChange={setShowExport}
-        />
-        <Presence show={showExport} variant="fade">
-          <TokenDownload stacked />
-        </Presence>
+      <div className="border-t border-line pt-5">
+        <TokenDownload compact />
       </div>
 
       <Button variant="secondary" className="w-full" onClick={resetSettings}>
