@@ -31,12 +31,25 @@ export function HeroToy() {
   const [active, setActive] = useState<Tone>('spring')
   const [atEnd, setAtEnd] = useState(false)
   const [replay, setReplay] = useState(0)
+  const [pendingFlip, setPendingFlip] = useState(0)
 
   const play = (tone: Tone) => {
-    setActive(tone)
-    setAtEnd((v) => !v)
     setReplay((r) => r + 1)
+    if (tone === active) {
+      setAtEnd((v) => !v)
+      return
+    }
+    // A different key mounts a different puck, which would appear already at its destination.
+    // Mount it where the last one rested, then flip on the next frame so it has somewhere to travel from.
+    setActive(tone)
+    setPendingFlip((n) => n + 1)
   }
+
+  useEffect(() => {
+    if (!pendingFlip) return
+    const id = requestAnimationFrame(() => setAtEnd((v) => !v))
+    return () => cancelAnimationFrame(id)
+  }, [pendingFlip])
 
   useEffect(() => {
     const id = window.setTimeout(() => setAtEnd(true), INTRO_DELAY_MS)
@@ -56,7 +69,7 @@ export function HeroToy() {
       {/* Screen: the darkest step of the palette, with a scope grid behind the puck */}
       <div className="rounded-2xl bg-screen p-4 text-ink">
         {/* Clipped so overshooting tokens stay inside the screen; the puck still rests at its ends. */}
-        <div className="screen-grid flex h-24 items-center overflow-hidden rounded-xl bg-ink/3 px-3">
+        <div className="screen-grid flex h-24 items-center lg:h-34 overflow-hidden rounded-xl bg-ink/3 px-3">
           {active === 'stagger' ? (
             <Stagger key={replay} gap="loose" className="flex w-full justify-between">
               {Array.from({ length: STAGGER_BLOCKS }, (_, i) => (

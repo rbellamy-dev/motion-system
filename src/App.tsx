@@ -60,23 +60,26 @@ export default function App() {
         <PageNav title="How things move" titleTargetId="page-title" links={JUMP_LINKS} />
         <div id="top" className="mx-auto max-w-6xl scroll-mt-20 px-4 sm:px-6">
           {/*
-            Phones read top to bottom: headline, instrument, then export, so the demo lands on the first screen.
-            Wide screens put the headline and export on the left and the instrument on the right.
+            Phones read top to bottom: headline, intro, instrument, then export, so the demo lands on the first screen.
+            Wide screens run the headline across the page with the intro and export under it,
+            and give the instrument the full width below, so the puck travels a real distance.
           */}
-          <header className="grid gap-x-14 gap-y-8 pt-10 pb-20 lg:grid-cols-[1.1fr_1fr] lg:pt-20 lg:pb-28">
-            <Reveal className="lg:self-end">
+          <header className="grid gap-y-8 pt-10 pb-20 lg:gap-y-0 lg:pt-20 lg:pb-28">
+            <Reveal>
               <h1 id="page-title" className="font-display text-display font-medium">
                 How things move.
               </h1>
-              <p className="mt-6 max-w-[48ch] text-lg text-muted">
+            </Reveal>
+            <Reveal className="-mt-2 lg:mt-6">
+              <p className="max-w-[60ch] text-lg text-muted">
                 A motion system in three layers: tokens hold the numbers, primitives turn them into movement, and
                 every pattern is built only from primitives. Change a token and the whole page follows.
               </p>
             </Reveal>
-            <Reveal duration="slow" className="lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center">
+            <Reveal duration="slow" className="lg:row-start-4 lg:mt-14">
               <HeroToy />
             </Reveal>
-            <Reveal className="lg:col-start-1 lg:row-start-2">
+            <Reveal className="lg:row-start-3 lg:mt-8">
               <div className="flex flex-wrap items-center gap-3">
                 <TokenDownload />
                 {site.repoUrl && (
