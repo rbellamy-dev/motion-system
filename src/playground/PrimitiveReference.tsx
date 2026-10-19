@@ -118,10 +118,59 @@ function PrimitiveCard({ name, tone, description, code, action, children }: Prim
           <h3 className="text-xl font-medium">{name}</h3>
         </div>
         <p className="text-muted">{description}</p>
-        <code className="mt-auto block font-mono text-sm wrap-break-word text-ink/80">{code}</code>
+        <code className="mt-auto block font-mono text-sm wrap-break-word text-ink">
+          <Highlighted code={code} />
+        </code>
       </div>
     </article>
   )
+}
+
+/** Props whose value names a token, so `spring="bouncy"` shows "bouncy" in spring's colour. */
+const TOKEN_PROPS: Partial<Record<string, Tone>> = { spring: 'spring', gap: 'stagger' }
+const TONE_TEXT: Record<Tone, string> = {
+  duration: 'text-duration',
+  easing: 'text-easing',
+  spring: 'text-spring',
+  stagger: 'text-stagger',
+}
+
+// A tag opening, a prop with a value, a bare prop, a tag end, then anything else one character at a time.
+const JSX_PART = /(<\/?)([A-Z]\w*)|(\w+)=("[^"]*"|\{[^}]*\})|(\w+)|(\/?>)|([\s\S])/g
+
+/**
+ * Highlights a one-line JSX example. Colour keeps its one meaning: only a token's name takes a colour,
+ * its family's. Everything else is ink, with names brighter than the punctuation around them.
+ */
+function Highlighted({ code }: { code: string }) {
+  const dim = 'text-muted/60'
+  return [...code.matchAll(JSX_PART)].map((m) => {
+    const [, open, tag, prop, value, bare, close, other] = m
+    const key = m.index
+    if (tag) {
+      return (
+        <span key={key}>
+          <span className={dim}>{open}</span>
+          <span className="font-medium">{tag}</span>
+        </span>
+      )
+    }
+    if (prop) {
+      const tone = TOKEN_PROPS[prop]
+      const inner = value.slice(1, -1)
+      return (
+        <span key={key}>
+          <span className="text-muted">{prop}</span>
+          <span className={dim}>={value[0]}</span>
+          <span className={tone ? cn('font-medium', TONE_TEXT[tone]) : undefined}>{inner}</span>
+          <span className={dim}>{value.at(-1)}</span>
+        </span>
+      )
+    }
+    if (bare) return <span key={key} className="text-muted">{bare}</span>
+    if (close) return <span key={key} className={dim}>{close}</span>
+    return <span key={key} className={other === '…' ? dim : undefined}>{other}</span>
+  })
 }
 
 function ActionButton({ onClick, children }: { onClick: () => void; children: ReactNode }) {
