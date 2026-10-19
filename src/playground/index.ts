@@ -1,4 +1,5 @@
 export { ControlPanel } from './ControlPanel'
+export { ControlSheet } from './ControlSheet'
 export { DemoCard } from './DemoCard'
 export { HeroToy } from './HeroToy'
 export { PageNav, type NavLink } from './PageNav'

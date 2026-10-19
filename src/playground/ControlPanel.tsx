@@ -1,4 +1,5 @@
 import { useMotionContext } from '@/motion'
+import { cn } from '@/lib/cn'
 import { Button, Slider, Toggle } from '@/ui'
 import { usePlayback } from './playback'
 import { TokenDownload } from './TokenDownload'
@@ -7,17 +8,33 @@ import { TokenDownload } from './TokenDownload'
  * Page-wide playback and accessibility. Individual tokens are tuned on their panels.
  * Export sits at the bottom as one compact row, always there, so the panel never grows taller.
  */
-export function ControlPanel() {
+interface ControlPanelProps {
+  /** Shows a Close button in the header, for when the panel is opened as a sheet. */
+  onClose?: () => void
+  className?: string
+}
+
+export function ControlPanel({ onClose, className }: ControlPanelProps) {
   const { settings, updateSettings, resetSettings, osReducedMotion } = useMotionContext()
   const { paused, setPaused } = usePlayback()
 
   return (
-    <aside aria-labelledby="controls-title" className="space-y-6 rounded-lg border border-line bg-surface p-5">
-      <div>
-        <h2 id="controls-title" className="text-xl font-medium">
-          Controls
-        </h2>
-        <p className="text-muted">Playback for the whole page. Edit individual tokens on their panels.</p>
+    <aside
+      aria-labelledby="controls-title"
+      className={cn('space-y-6 rounded-lg border border-line bg-surface p-5', className)}
+    >
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h2 id="controls-title" className="text-xl font-medium">
+            Controls
+          </h2>
+          <p className="text-muted">Playback for the whole page. Edit individual tokens on their panels.</p>
+        </div>
+        {onClose && (
+          <Button variant="ghost" size="sm" className="-mt-1 -mr-2 shrink-0" onClick={onClose}>
+            Close
+          </Button>
+        )}
       </div>
 
       <Slider

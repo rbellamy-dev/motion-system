@@ -1,8 +1,10 @@
 import type { ReactNode } from 'react'
 import { ListDemo, ModalDemo, ToastDemo } from '@/patterns'
 import { MotionConfigProvider, Reveal } from '@/motion'
+import { useMediaQuery } from '@/lib/useMediaQuery'
 import {
   ControlPanel,
+  ControlSheet,
   DemoCard,
   HeroToy,
   PageNav,
@@ -54,6 +56,9 @@ const linkClass =
   'font-medium underline decoration-2 underline-offset-4 decoration-accent hover:decoration-ink focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-easing rounded-sm'
 
 export default function App() {
+  // Tailwind's lg breakpoint, where the controls sit beside the content.
+  const wide = useMediaQuery('(min-width: 64rem)')
+
   return (
     <MotionConfigProvider>
       <PlaybackProvider>
@@ -92,13 +97,16 @@ export default function App() {
           </header>
 
           <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-14">
-            {/* First in the DOM so tab order matches the mobile layout; sits on the right on large screens. */}
-            <div className="lg:order-last">
-              {/* Sits below the fixed nav bar while scrolling. */}
-              <div className="lg:sticky lg:top-20">
-                <ControlPanel />
+            {/* Wide screens pin the panel on the right, below the fixed nav bar. Smaller screens get it as a sheet. */}
+            {wide ? (
+              <div className="order-last">
+                <div className="sticky top-20">
+                  <ControlPanel />
+                </div>
               </div>
-            </div>
+            ) : (
+              <ControlSheet />
+            )}
 
             <main className="min-w-0 space-y-20">
               <Section reveal={false} title="Tokens" lede="The raw material. Tokens in the same family race side by side, so you feel the difference instead of reading it. Tokens build on each other, so tuning one can change others.">

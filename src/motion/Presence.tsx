@@ -3,7 +3,8 @@ import { AnimatePresence, motion, type TargetAndTransition } from 'motion/react'
 import type { SpringToken } from '@/tokens'
 import { useMotionToken } from './useMotionToken'
 
-export type PresenceVariant = 'fade' | 'rise' | 'scale'
+/** `sheet` slides the whole element up from below its resting place, for panels docked to the bottom edge. */
+export type PresenceVariant = 'fade' | 'rise' | 'scale' | 'sheet'
 
 interface PresenceProps {
   show: boolean
@@ -25,6 +26,8 @@ export function Presence({ show, children, variant = 'rise', spring = 'snappy', 
     fade: { opacity: 0 },
     rise: { opacity: 0, y: m.distance('md') },
     scale: { opacity: 0, scale: m.scale('subtle') },
+    // Travels its own full height, so it isn't a distance token; reduced motion keeps the fade only.
+    sheet: m.reducedMotion ? { opacity: 0 } : { y: '100%' },
   }
   const hidden = hiddenStates[variant]
 
